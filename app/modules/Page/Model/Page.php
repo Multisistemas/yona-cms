@@ -53,11 +53,13 @@ class Page extends Model
 
     public function afterUpdate()
     {
+/*
         $this->cacheManager->delete([
             Keys::PAGE,
             $this->slug,
             self::$lang
         ]);
+*/
     }
 
     public function updateFields($data)
