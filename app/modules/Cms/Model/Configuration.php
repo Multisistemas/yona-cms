@@ -21,6 +21,7 @@ class Configuration extends \Phalcon\Mvc\Model
      * Если таблица в БД будет пустая, она автоматически заполнится значениями по-умолчанию
      */
     public static $keys = [
+        'CLOSED_SITE'       => 0,
         'DEBUG_MODE'        => 1,
         'TECHNICAL_WORKS'   => 0,
         'PROFILER'          => 1,

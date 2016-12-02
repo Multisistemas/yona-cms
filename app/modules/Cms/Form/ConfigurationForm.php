@@ -16,6 +16,7 @@ class ConfigurationForm extends Form
 
     public function initialize()
     {
+        $this->add((new Check('CLOSED_SITE'))->setLabel('Closed site'));
         $this->add((new Check('DEBUG_MODE'))->setLabel('Debug mode, display application errors'));
         $this->add((new Check('PROFILER'))->setLabel('DB Profiler'));
         $this->add((new Check('DISPLAY_CHANGELOG'))->setLabel('Display Changelog at Admin dashboard startpage'));
@@ -25,4 +26,4 @@ class ConfigurationForm extends Form
 
     }
 
-} 
+}

@@ -6,6 +6,9 @@ use Application\Mvc\Controller;
 use Page\Model\Helper\PageHelper;
 use Page\Model\Page;
 use Phalcon\Exception;
+use Index\Form\LoginForm;
+use Michelf\Markdown;
+use Phalcon\Mvc\View;
 
 class IndexController extends Controller
 {
@@ -20,14 +23,19 @@ class IndexController extends Controller
         if (!$pageResult) {
             throw new Exception("Page 'index' not found");
         }
-        
+
         $this->helper->title()->append($pageResult->meta_title);
         $this->helper->meta()->set('description', $pageResult->meta_description);
         $this->helper->meta()->set('keywords', $pageResult->meta_keywords);
-        
+
         $this->helper->menu->setActive('index');
 
         $this->view->text = $pageResult->text;
+    }
+
+    public function loginAction()
+    {
+        echo "Hello login action front end";
     }
 
 }
