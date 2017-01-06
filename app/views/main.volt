@@ -10,16 +10,19 @@
     {{ helper.meta().get('description') }}
     {{ helper.meta().get('keywords') }}
     {{ helper.meta().get('seo-manager') }}
+    <link href="{{ url.path() }}vendor/css/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css">
+    <link href="{{ url.path() }}vendor/css/css/bootstrap.min.css" rel="stylesheet" type="text/css">
 
     <link href="{{ url.path() }}favicon.ico" rel="shortcut icon" type="image/vnd.microsoft.icon">
 
-    <!--css reset-->
-    <link href="{{ url.path() }}vendor/css/reset.min.css" rel="stylesheet" type="text/css">
-    <!--/css reset -->
-
-    <!--css libs-->
+    <!--css <link href="{{ url.path() }}vendor/css/reset.min.css" rel="stylesheet" type="text/css"> reset -->
+    <link href="{{ url.path() }}vendor/semantic-2.1/semantic.min.css" rel="stylesheet" type="text/css">
     <link href="{{ url.path() }}vendor/font-awesome-4.2.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <!--/css libs-->
+
+    <!-- Bootstrap -->
+    
+    <!--/css bootstrap -->
 
     <!--less-->
     <link href="{{ url.path() }}static/less/style.less" rel="stylesheet/less" type="text/css">

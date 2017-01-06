@@ -12,6 +12,8 @@ return [
         'sitemap/index'     => '*',
         'api/index'         => '*',
         'api/page'          => '*',
+        'auth/index'        => '*',
+        'auth/login'        => '*',
     ],
     'member'     => [
         'index/index' => '*',

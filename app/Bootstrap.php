@@ -2,6 +2,7 @@
 
 namespace YonaCMS;
 use Application\Cache\Manager as CacheManager;
+use Phalcon\Session\Adapter\Files as SessionAdapter;
 
 /**
  * Bootstrap
@@ -29,8 +30,9 @@ class Bootstrap
         $loader->registerNamespaces($config->loader->namespaces->toArray());
         $loader->registerDirs([APPLICATION_PATH . "/plugins/"]);
         $loader->register();
-        require_once APPLICATION_PATH . '/../vendor/autoload.php';
 
+        require_once APPLICATION_PATH . '/../vendor/autoload.php';
+    
         // Database
         $db = new \Phalcon\Db\Adapter\Pdo\Mysql([
             "host"     => $config->database->host,
@@ -85,6 +87,15 @@ class Bootstrap
         $di->set('flash', $flash);
 
         $di->set('helper', new \Application\Mvc\Helper());
+
+        /**
+         * Start the session the first time some component request the session service
+         */
+        $di->set('session', function() {
+            $session = new SessionAdapter();
+            $session->start();
+            return $session;
+        });
 
         // Routing
         $this->initRouting($application, $di);

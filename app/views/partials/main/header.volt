@@ -1,14 +1,15 @@
-<a class="logo" href="{{ helper.langUrl(['for':'index']) }}">
-    <img src="{{ url.path() }}static/images/logo.png" alt="">
-</a>
-
-<!--Github stars-->
-<div style="position: absolute;top:10px;left:270px;z-index: 0;height: 30px;overflow: hidden;">
-    <iframe frameborder="none" src="http://ghbtns.com/github-btn.html?user=oleksandr-torosh&repo=yona-cms&type=watch&count=true&size=large"></iframe>
-</div>
-<!--/Github stars-->
-
-{{ helper.staticWidget('phone') }}
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">Multisistemas</a>
+    </div>
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav navbar-right">
+          <li><a href="/auth/index/login">Iniciar sesión / Registrarse</a></li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
 
 {% set languages = helper.languages() %}
 {% if languages|length > 1 %}
