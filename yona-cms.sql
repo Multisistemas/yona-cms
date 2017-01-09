@@ -26,6 +26,9 @@ SET time_zone = "+00:00";
 -- Table structure for table `admin_user`
 --
 
+create database yona;
+use yona;
+
 CREATE TABLE IF NOT EXISTS `admin_user` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `role` enum('journalist','editor','admin') NOT NULL DEFAULT 'journalist',

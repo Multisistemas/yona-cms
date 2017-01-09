@@ -36,6 +36,11 @@
     "robmorgan/phinx": "dev-master",
     "michelf/php-markdown": "*",
     "mobiledetect/mobiledetectlib": "^2.8",
-    "sneakybobito/phalcon-stubs": "*"
+    "sneakybobito/phalcon-stubs": "*",
+    "google/apiclient": "2.0",
+    "opauth/opauth": "*",
+    "opauth/facebook": "*",
+    "opauth/google": "*",
+    "opauth/twitter": "*"
   }
 }
