@@ -33,6 +33,7 @@ class Config
             'memcache'  => (isset($application['memcache'])) ? $application['memcache'] : null,
             'memcached'  => (isset($application['memcached'])) ? $application['memcached'] : null,
             'assets'    => (isset($application['assets'])) ? $application['assets'] : null,
+            'opauth'    => (isset($application['opauth'])) ? $application['opauth'] : null,
         ];
 
         $global = include_once APPLICATION_PATH . '/config/global.php';
