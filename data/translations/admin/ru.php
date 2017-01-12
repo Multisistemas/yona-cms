@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Исходные надписи в шаблонах сделаны на русском, потому их дублирование тут не будет уместным.
+ * Initial signs in the templates are made in Russian, because they overlap there will not be appropriate.
  */
 
 return array(

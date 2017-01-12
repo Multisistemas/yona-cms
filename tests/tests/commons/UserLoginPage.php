@@ -45,7 +45,7 @@ class UserLoginPage
         $this->login(self::$login, self::$password);
 
         $I->seeInCurrentUrl('/admin');
-        $I->see('Административная панель YonaCms');
+        $I->see('Administrative panel YonaCms');
 
         return $this;
     }

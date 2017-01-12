@@ -28,7 +28,7 @@ class IndexController extends Controller
             $this->redirect($this->url->get() . 'admin/index/login');
         }
 
-        // Проверка пользователя yona
+        // Check user yona
         $yona = AdminUser::findFirst("login = 'yona'");
         if ($yona) {
             $this->flash->warning($this->helper->at('Warning. Found admin user with name yona'));

@@ -32,7 +32,7 @@ abstract class Form extends \Phalcon\Forms\Form
         $html = '';
         if (count($messages)) {
             $html .= '<div class="ui error message">';
-            $html .= '<div class="header">' . $this->helper->translate('Ошибка валидации формы') . '</div>';
+            $html .= '<div class="header">' . $this->helper->translate('Error form validation') . '</div>';
             foreach ($messages as $message) {
                 $html .= '<p>' . $message . '</p>';
             }

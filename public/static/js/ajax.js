@@ -53,7 +53,7 @@ function AjaxViewModel() {
                 self.postUpdate(response);
             }
         }).fail(function() {
-            alert('Ошибка загрузки страницы');
+            alert('Error loading page');
         });
     }
 
