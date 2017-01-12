@@ -31,7 +31,7 @@ class User extends Model {
     public function setPass($pass) { $this->pass = $pass; }
     public function getPass() { return $this->pass; }
     public function setActive($active) { $this->active = $active; }
-    public function getActive() { return $this->active }
+    public function getActive() { return $this->active; }
     public function setSuspended($suspended) { $this->suspended = $suspended; }
     public function getSuspended() { return $this->suspended; }
     public function setDeleted($deleted) { $this->deleted = $deleted; }
