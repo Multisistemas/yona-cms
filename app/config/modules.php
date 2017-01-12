@@ -17,5 +17,5 @@ return array(
     'Tree',
     'Sitemap',
     'Api',
-    'Auth',
+    'Dashboard',
 );

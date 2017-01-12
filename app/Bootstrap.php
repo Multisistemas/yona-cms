@@ -71,6 +71,9 @@ class Bootstrap
         $session->start();
         $di->set('session', $session);
 
+        $request = new \Phalcon\Http\Request;
+        $di->set('request', $request);
+
         $acl = new \Application\Acl\DefaultAcl();
         $di->set('acl', $acl);
 

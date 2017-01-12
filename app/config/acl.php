@@ -12,8 +12,9 @@ return [
         'sitemap/index'     => '*',
         'api/index'         => '*',
         'api/page'          => '*',
-        'auth/index'        => '*',
-        'auth/login'        => '*',
+        'dashboard/index'        => '*',
+        'dashboard/login'        => '*',
+        'dashboard/register'     => '*',
     ],
     'member'     => [
         'index/index' => '*',

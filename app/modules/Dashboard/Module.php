@@ -1,6 +1,6 @@
 <?php
 
-namespace Auth;
+namespace Dashboard;
 
 class Module
 {
@@ -13,7 +13,7 @@ class Module
     public function registerServices($di)
     {
         $dispatcher = $di->get('dispatcher');
-        $dispatcher->setDefaultNamespace('Auth\Controller');
+        $dispatcher->setDefaultNamespace('Dashboard\Controller');
         $di->set('dispatcher', $dispatcher);
 
         /**

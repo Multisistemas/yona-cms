@@ -12,6 +12,7 @@
     {{ helper.meta().get('seo-manager') }}
     <link href="{{ url.path() }}vendor/css/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css">
     <link href="{{ url.path() }}vendor/css/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="{{ url.path() }}vendor/css/css/style.css" rel="stylesheet" type="text/css">
 
     <link href="{{ url.path() }}favicon.ico" rel="shortcut icon" type="image/vnd.microsoft.icon">
 
@@ -24,10 +25,10 @@
     
     <!--/css bootstrap -->
 
-    <!--less-->
-    <link href="{{ url.path() }}static/less/style.less" rel="stylesheet/less" type="text/css">
+    
+    <!--<link href="{{ url.path() }}static/less/style.less" rel="stylesheet/less" type="text/css">-->
     <script src="{{ url.path() }}vendor/js/less-1.7.3.min.js" type="text/javascript"></script>
-    <!--/less-->
+    
 
     <script src="{{ url.path() }}vendor/js/jquery-1.11.0.min.js"></script>
 

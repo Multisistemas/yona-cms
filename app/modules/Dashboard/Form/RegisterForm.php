@@ -1,12 +1,12 @@
 <?php
 
-namespace Auth\Form;
+namespace Dashboard\Form;
 
 use Phalcon\Forms\Element\Text;
 use Phalcon\Forms\Element\Password;
 use Phalcon\Validation\Validator\PresenceOf;
 
-class LoginForm extends \Phalcon\Forms\Form
+class RegisterForm extends \Phalcon\Forms\Form
 {
 
     public function initialize()

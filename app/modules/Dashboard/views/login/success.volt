@@ -1,4 +1,5 @@
-<div>
+<div class="container">
+    <div class="col-md-12"></div>
     <section>
         {% if auths['auth']['raw']['gender'] == "female" %}
            <h2>Bienvenida 
@@ -7,19 +8,18 @@
         {% endif  %}
         {{ auths['auth']['raw']['given_name'] }}</h2>
         <pre>
-        <?php print_r($auths); ?>
+        <?php //print_r($auths); ?>
         </pre>
 
         <p>A continuación encontrarás los enlaces a nuestros sistemas de información:</p>
 		<h4>Enlaces</h4>
-        <div class="bs-glyphicons"> 
-        <ul class="bs-glyphicons-list">
+        <div> 
+        <ul>
         {% for id,link in auths['modules'] %}
         	{% if id is scalar %}
         	<a href='{{link}}'>
         	<li>
-        		 <span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 
-        		 <span class="glyphicon-class">{{id}}</span>
+        		 <span>{{id}}</span>
         	</li>
         	</a>
         	{% endif %}
@@ -34,8 +34,7 @@
         	{% if id is scalar %}
         	<a href='{{link}}'>
         	<li>
-        		 <span class="glyphicon glyphicon-book" aria-hidden="true"></span> 
-        		 <span class="glyphicon-class">{{id}}</span>
+        		 <span>{{id}}</span>
         	</li>
         	</a>
         	{% endif %}
@@ -43,4 +42,5 @@
         </ul>
         </div>
     </section>
+</div>
 </div>

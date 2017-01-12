@@ -1,0 +1,84 @@
+html {
+  position: relative !important;
+  min-height: 100% !important;
+}
+body {
+  /* Margin bottom by footer height */
+  margin-bottom: 60px;
+}
+
+header .languages .lang {
+	margin: 5px;
+  display: inline-block;
+  border: 1px solid #c1c1c1;
+  border-radius: 3px;
+  padding: 3px;
+}
+
+header .languages {
+	float: right;
+	padding-right: 20px;
+	margin: 5px; 
+}
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 60px;
+  background-color: #eeeeee;
+  border: 1px solid #c1c1c1;
+}
+
+.footer {
+  padding-right: 15px;
+  padding-left: 20px;
+  padding-top: 20px
+}
+
+.mseilogo {
+	text-align: center;
+}
+
+.jumbotron {
+	text-align: center;
+}
+
+.navbar-custom {
+  background:#146aae;
+  color:#ffffff;
+  border-radius:0;
+}
+  
+.navbar-custom .navbar-nav > li > a {
+  color:#fff;
+}
+.navbar-custom .navbar-nav > .active > a, .navbar-nav > .active > a:hover, .navbar-nav > .active > a:focus {
+  color: #ffffff;
+  background-color:transparent;
+}
+      
+.navbar-custom .navbar-nav > li > a:hover, .nav > li > a:focus {
+  text-decoration: none;
+  background-color: #c1c1c1;
+}
+      
+.navbar-custom .navbar-brand {
+  color:#ffffff !important;
+}
+
+.navbar-custom .navbar-toggle {
+  background-color:#eeeeee;
+}
+.navbar-custom .icon-bar {
+  background-color:#33aa33;
+}
+
+.submitlogin {
+  text-align: right !important;
+}
+
+.opauthlogin {
+
+}

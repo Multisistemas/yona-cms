@@ -1,10 +1,7 @@
+<header>
+    {{ partial('main/header') }}
+</header>
 <div class="wrapper-in">
-
-    <header>
-        {{ partial('main/header') }}
-    </header>
-
-    {{ partial('main/menu') }}
 
     <div id="main">
 
@@ -17,15 +14,13 @@
         {% endif %}
 
     </div>
-
-    <footer>
-        {{ partial('main/footer') }}
-    </footer>
-
 </div>
+<footer class="footer">
+    {{ partial('main/footer') }}
+</footer>
 
-{% if registry.cms['PROFILER'] %}
+<!--{% if registry.cms['PROFILER'] %}
     {{ helper.dbProfiler() }}
-{% endif %}
+{% endif %}-->
 
 {{ helper.javascript('body') }}

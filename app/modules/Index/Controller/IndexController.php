@@ -31,6 +31,12 @@ class IndexController extends Controller
         $this->helper->menu->setActive('index');
 
         $this->view->text = $pageResult->text;
+
+        if ($this->session->has('opauth')) {
+            $this->view->thesession = true; 
+        } else {
+            $this->view->thesession = false;
+        }
     }
 
     public function loginAction()
