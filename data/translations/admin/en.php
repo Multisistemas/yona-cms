@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'YonaCms Admin Panel' => 'Административная панель YonaCms',
+    'YonaCms Admin Panel' => 'Administrative panel YonaCms',
     'List of Languages' => 'List of Languages',
     'Title' => 'Title',
     'Slug' => 'Slug',
