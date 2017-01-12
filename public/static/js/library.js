@@ -1,5 +1,5 @@
 /**
- * Events. Універсальна бібліотека для роботи з подіями
+ * Events. Universal library for working with events
  **/
 Event = (function() {
 
@@ -41,7 +41,7 @@ Event = (function() {
         return event;
     }
 
-    /* Вызывается в контексте элемента всегда this = element */
+    /* Called in the context of the item is always this = element */
     function commonHandle(event) {
         event = fixEvent(event);
 

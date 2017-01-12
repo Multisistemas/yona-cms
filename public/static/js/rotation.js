@@ -2,13 +2,13 @@
  * Rotation
  * Documentation
  *
- * Библиотека для универсального управления элементами со сменным содержимим по принципу "листалки" или "rotation"
+ * Universal Library controls to change the content on the principle of "listalki" or "the item's rotation"
  *
  * JS:
- * // Подключаем 1 раз
+ * // Connecting 1 times
  * <script src="your-path/rotation.js"></script>
  *
- * // Инициализируем
+ * // Initialize
  * <script>
  *     var rotation = new Rotation();
  *     rotation.init();
@@ -25,27 +25,27 @@
  * </div>
  *
  *
- * Для инициализации элемента, необходимо добавить атрибут data-rotation="" для корневого HTML-элемента.
- * Атрибут должен содержать конфигурацию
- * Пример конфигурации: data-rotation="target: .items > .item; interval: 2; animationSpeed: 300; nav: .nav-sm; current: .nav-counter > .current"
+ * To initialize an element, you must add an attribute data-rotation="" root HTML-element.
+ * The attribute must contain a configuration
+ * Example configuration: data-rotation="target: .items > .item; interval: 2; animationSpeed: 300; nav: .nav-sm; current: .nav-counter > .current"
  *
- * Перечень свойств конфигурации:
- * target - (селектор) элементы, которые будут перелистываться
+ * Configuration Properties:
+ * target - (Selector) elements that are turning the pages
  *
- * interval - (секунды) интервал смены текущей позиции ротатора
+ * interval - (Seconds) interval change the current position of the rotator
  *
- * animationSpeed - (миллисекунды) время анимации смены активного элемента
+ * animationSpeed - (Milliseconds), the animation change the active element
  *
- * nav - (селектор) элемент навигации. HTML-элемент, который соотв. селектору, должен содержать внутри два HTML-элемента с классами: "prev" и "next"
+ * nav - (Selector) navigation element. HTML-element that respectively. selector must contain within two HTML-element classes: "prev" and "next"
  *
- * current - (селектор) - элемент, который находится внутри селектора "nav". Отвечает за визуальный вывод текущей позиции ротатора.
+ * current - (Selector) - an element that is inside the selector "nav". Responsible for the visual output of the current position of the rotator.
  *
- * pickerItems - (селектор) элементы, которые используются для точечного выбора текущей позиции.
- * Элементы должны содержать атрибут data-pos="1" со значением позиции на которую произойдет перелистывание при клике на этот элемент.
+ * pickerItems - (Selector) elements are used to select the current dot position.
+  * Items must contain attribute data-pos = "1" with the value of the position at which the scrolling will happen when you click on the item.
  *
- * targetRel - (селектор) сопряженные элементы, которые перелистываются при изменении текущей позиции при перелистывании.
+ * targetRel - (Selector) associated elements, which can be switched with the change of the current position on every page.
  *
- * Если любое из свойств не задано - оно не используется. Значений по умолчанию нет.
+ * If any of the properties is not specified - it is not used. No default.
  **/
 function Rotation() {
 
