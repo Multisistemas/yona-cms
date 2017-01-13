@@ -14,6 +14,7 @@ class RegisterForm extends \Phalcon\Forms\Form
         $email = new Text('email', array(
             'required' => true,
             'placeholder' => 'Ingrese su correo',
+            'class' => 'form-control',
         ));
         $email->addValidator(new PresenceOf(array('message' => 'El correo es requerido')));
         $this->add($email);
@@ -21,9 +22,19 @@ class RegisterForm extends \Phalcon\Forms\Form
         $password = new Password('password', array(
             'required' => true,
             'placeholder' => 'Ingrese su contraseña',
+            'class' => 'form-control',
         ));
         $password->addValidator(new PresenceOf(array('message' => 'La contraseña es requerida')));
         $this->add($password);
+
+        $rmail = new Text('rmail', array(
+            'required' => true,
+            'placeholder' => 'Ingrese su correo',
+            'class' => 'form-control',
+            'id' => 'rmail',
+        ));
+        $rmail->addValidator(new PresenceOf(array('message' => 'El correo es requerido')));
+        $this->add($rmail);
 
     }
 

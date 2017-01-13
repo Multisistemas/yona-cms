@@ -6,6 +6,7 @@ define('ROOT', __DIR__);
 define('HOST_HASH', substr(md5($_SERVER['HTTP_HOST']), 0, 12));
 
 define('OPAUTH_LIB_DIR', dirname(dirname(__FILE__)).'/vendor/opauth/opauth/lib/Opauth/');
+define('SWIFT_LIB_DIR', dirname(dirname(__FILE__)).'/vendor/swiftmailer/swiftmailer/lib/');
 
 
 if (isset($_SERVER['APPLICATION_ENV'])) {

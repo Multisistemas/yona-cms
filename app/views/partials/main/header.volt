@@ -7,9 +7,9 @@
       <ul class="nav navbar-nav navbar-right">
       {% set tsession = session.has('opauth') %}
       {% if tsession == true %}
-        <li><a href="/auth/login/logout">Cerrar sesión</a></li>
+        <li><a href="/dashboard/login/logout">Cerrar sesión</a></li>
       {% else %}
-        <li><a href="/auth/index/login">Iniciar sesión / Registrarse</a></li>
+        <li><a href="/dashboard/index/login">Iniciar sesión / Registrarse</a></li>
       {% endif %}      
       </ul>
     </div>

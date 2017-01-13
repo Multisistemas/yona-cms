@@ -13,18 +13,6 @@ class Routes
             'action' => 'index',
         ), 'dashboard');
 
-        $router->addML('/dashboard/', array(
-            'module' => 'dashboard',
-            'controller' => 'register',
-            'action' => 'index',
-        ), 'dashboard');
-
-        $router->addML('/', array(
-            'module' => 'index',
-            'controller' => 'index',
-            'action' => 'index',
-        ), 'index');
-
         return $router;
     }
 

@@ -20,13 +20,13 @@ class User extends Model {
 
 	public function initialize() {
         //$this->hasMany("id", $this->foreign, "foreign_id");
-        //$this->skipAttributes(array('id','created_at','updated_at','created_by','updated_by'));
+        $this->skipAttributes(array('id','created_at','updated_at','created_by','updated_by'));
     }
 
     public function getId() { return $this->id; }
 	public function setName($name) { $this->name = $name; }
     public function getName() { return $this->name; }
-    public function setEmail($name) { $this->name = $name; }
+    public function setEmail($email) { $this->email = $email; }
     public function getEmail() { return $this->email; }
     public function setPass($pass) { $this->pass = $pass; }
     public function getPass() { return $this->pass; }
@@ -39,6 +39,7 @@ class User extends Model {
     
     public function getCreatedAt() { return $this->created_at; }
     public function getUpdatedAt() { return $this->updated_at; }
+    public function setUpdatedAt($updated_at) { $this->updated_at = $updated_at; }
 
     public function setCreatedBy($created_by) { $this->created_by = $created_by; }
     public function getCreatedBy() { return $this->created_by; }

@@ -6,15 +6,22 @@ use Application\Mvc\Controller;
 use Dashboard\Form\RegisterForm;
 use Phalcon\Mvc\View;
 use Dashboard\Model\User;
+use Dashboard\Model\UserToken;
+use Phalcon\Http\Response;
+
+require_once SWIFT_LIB_DIR . 'swift_required.php';
 
 class RegisterController extends Controller
 {
 	/**
      * La acción de inicio, permite buscar
      */
-    public function indexAction()
-    {
-        // ...
+    public function indexAction() {
+        
+    }
+
+    public function sentAction($success = null) {
+        $this->view->success = $success;
     }
 
     /**
@@ -32,25 +39,22 @@ class RegisterController extends Controller
     public function newAction($post)
     {
 
-        $user = new User();
-        //var_dump($user);
-/*
+        $user = new User;
+
         $user->setName(null);
-        $user->setEmail($post["email"]);
+        $user->setEmail($post["rmail"]);
         $user->setPass(null);
         $user->setActive(0);
         $user->setSuspended(0);
         $user->setDeleted(0);
 
-        var_dump($user);
-
         if ($user->save()) {
-            echo 'El correo se almaceno correctamente';
+            return $post["rmail"];
         } else {
-            echo 'Error al guardar';
+            return false;
         }
 
-        $this->view->disable();*/
+        $this->view->disable();
     }
 
     /**
@@ -86,12 +90,132 @@ class RegisterController extends Controller
     }
 
     public function sendMailAction() {
-
-    	//var_dump($this->request->getPost());
         
         $post = $this->request->getPost();
-        $this->newAction($post);
+        $saved_email = $this->newAction($post);
 
-    	//$this->view->disable();
+        if ($saved_email == false) {
+            $this->flash->error('Ha ocurrido un error al almacenar el correo');
+        } else { 
+
+            $row = User::findFirstByEmail($saved_email);
+
+            if ($row != null || $row != false) {
+
+                $token = bin2hex(openssl_random_pseudo_bytes(16));
+                $user_token = new UserToken;
+
+                $user_token->setUserId($row->getId());
+                $user_token->setToken($token);
+
+                try {
+                
+                    if ($user_token->save()) {
+                       $result = $this->swiftSend($token, $saved_email);
+                       $this->dispatcher->forward(
+                            [
+                                "controller" => "register",
+                                "action" => "sent",
+                                "params" => [1],
+                                "namespace" => "Dashboard\Controller"
+                            ]
+                        );
+                    }
+
+                } catch (Exception $e) {
+                  echo 'Ha ocurrido un error: ',  $e->getMessage(), "\n";
+                }
+            }
+        }
+
+    	$this->view->disable();
+    }
+
+    private function swiftSend($token = NULL, $saved_email) {
+        $parameters = $this->objectToArray($this->config->swift);
+
+        $transport = \Swift_SmtpTransport::newInstance($parameters['server'], $parameters['port'])
+            ->setUsername($parameters['username'])
+            ->setPassword($parameters['password']);
+
+        $mailer = \Swift_Mailer::newInstance($transport);
+
+        $message = \Swift_Message::newInstance('Confirmación de cuenta')
+          ->setFrom(array($parameters['username'] => 'Multisistemas Team'))
+          ->setTo(array($saved_email))
+          ->addPart('<h1>Mensaje enviado desde Multisistemas Dashboard</h1>
+               <p>Email: '.$saved_email.'</p>
+               <p>Mensaje: Haga click en el siguiente enlace para verificar su correo:</p>'.
+                '<p>http://'.$_SERVER['HTTP_HOST'].'/dashboard/register/validate/'.$token
+                .'</p>', 'text/html');
+
+        try {
+            
+            if ($result = $mailer->send($message)) {
+                return true;
+            }
+
+        } catch (Exception $e) {
+            echo 'Ha ocurrido un error: ',  $e->getMessage(), "\n";
+        }
+    }
+
+    public function objectToArray($object)
+    {
+        if(!is_object($object) && !is_array($object))
+        {
+            return $object;
+        }
+        if(is_object($object))
+        {
+            $object = get_object_vars( $object );
+        }
+        return array_map(array($this,"objectToArray"), $object );
+    }
+
+    public function showAction() {
+        //echo $token = bin2hex(openssl_random_pseudo_bytes(16));
+        //echo function_exists('proc_open') ? "Yep, that will work" : "Sorry, that won't work";
+        //var_dump("http://".$_SERVER['HTTP_HOST'].'/dashboard/login/loginManual');
+
+        /*$parameters = $this->objectToArray($this->config->swift);
+
+        $transport = \Swift_SmtpTransport::newInstance($parameters['server'], $parameters['port'])
+            ->setUsername($parameters['username'])
+            ->setPassword($parameters['password']);
+
+        $mailer = \Swift_Mailer::newInstance($transport);
+
+
+        $message = \Swift_Message::newInstance('Confirmación de cuenta')
+          ->setFrom(array('no-reply@multisistemax.com' => 'Multisistemas Team'))
+          ->setTo(array('lmedrano@multisistemas.com.sv'))
+          ->addPart('<h1>Mensaje enviado desde Multisistemas Dashboard</h1>
+               <p>Email: lmedrano@multisistemas.com.sv</p>
+               <p>Mensaje: Haga click en el siguiente enlace para verificar su correo:</p>'.
+                '<p>http://'.$_SERVER['HTTP_HOST'].'/dashboard/register/validate/'
+                .'</p>', 'text/html');
+
+        try {
+            
+            if ($result = $mailer->send($message)) {
+                echo "Mensaje enviado con exito";
+            }
+
+        } catch (Exception $e) {
+            echo 'Ha ocurrido un error: ',  $e->getMessage(), "\n";
+        } */
+
+        // Getting a response instance
+        $this->dispatcher->forward(
+            [
+                "controller" => "register",
+                "action" => "sent",
+                "params" => [1],
+                "namespace" => "Dashboard\Controller",
+            ]
+        );
+
+
     }
 }

@@ -20,13 +20,7 @@
     <script src="{{ url.path() }}vendor/js/less-1.7.3.min.js" type="text/javascript"></script>
     <!--/less-->
 
-    <script src="{{ url.path() }}vendor/js/jquery-1.11.0.min.js"></script>
-    <script src="{{ url.path() }}vendor/semantic-2.1/semantic.min.js"></script>
-    <script src="{{ url.path() }}vendor/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="{{ url.path() }}vendor/bootstrap/jasny-bootstrap/js/jasny-bootstrap.min.js"></script>
-    <script src="{{ url.path() }}vendor/js/jquery.address.js"></script>
-    <script src="{{ url.path() }}vendor/noty/packaged/jquery.noty.packaged.min.js"></script>
-    <script src="{{ url.path() }}static/js/admin.js"></script>
+    
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -64,6 +58,13 @@
     </div>
 
 {{ assets.outputJs('modules-admin-js') }}
+    <script src="{{ url.path() }}vendor/js/jquery-1.11.0.min.js"></script>
+    <script src="{{ url.path() }}vendor/semantic-2.1/semantic.min.js"></script>
+    <script src="{{ url.path() }}vendor/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="{{ url.path() }}vendor/bootstrap/jasny-bootstrap/js/jasny-bootstrap.min.js"></script>
+    <script src="{{ url.path() }}vendor/js/jquery.address.js"></script>
+    <script src="{{ url.path() }}vendor/noty/packaged/jquery.noty.packaged.min.js"></script>
+    <script src="{{ url.path() }}static/js/admin.js"></script>
 
 </body>
 </html>

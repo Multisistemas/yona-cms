@@ -39,4 +39,11 @@ return [
             ],
         ],
     ],
+
+    'swift' => [
+        'server'    => 'a2ss35.a2hosting.com',
+        'port'      => 25,
+        'username'  => 'no-reply@multisistemax.com',
+        'password'  => 'VKPSkevoC2+h',
+    ],
 ];

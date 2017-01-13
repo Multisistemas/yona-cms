@@ -4,6 +4,7 @@ namespace Dashboard\Controller;
 
 use Application\Mvc\Controller;
 use Dashboard\Form\LoginForm;
+use Dashboard\Form\RegisterForm;
 use Phalcon\Mvc\View;
 
 
@@ -15,8 +16,12 @@ class IndexController extends Controller
     }
 
     public function loginAction() {
-        $form = new LoginForm();
-        $this->view->form = $form;  
+    	$this->view->pick('index/login');
+        $loginform = new LoginForm();
+        $registerform = new RegisterForm();
+
+        $this->view->loginform = $loginform;
+        $this->view->registerform = $registerform;
     }
 
 }

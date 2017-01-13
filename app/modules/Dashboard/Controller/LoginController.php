@@ -22,7 +22,7 @@ class LoginController extends Controller
     }
 
     public function loginOpauthAction() {
-        var_dump($this->login());
+
         $this->session->set('opauth', $this->login());
         $this->view->disable();
     }
