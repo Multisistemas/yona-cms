@@ -9,18 +9,18 @@
                 <div class="panel-body" >
                     <form class="form-horizontal" method="post" action="{{ url.get() }}dashboard/login/loginManual">
                         <div class="form-group">
-                            <label for="email" class="col-sm-2 control-label">Correo</label>
+                            <label for="email" class="col-sm-2 control-label">Correo:</label>
                             <div class="col-sm-10">
                                 {{ loginform.render('email') }}
                             </div>
                             </div>
                         <div class="form-group">
-                            <label for="password" class="col-sm-2 control-label">Contraseña</label>
+                            <label for="password" class="col-sm-2 control-label">Contraseña:</label>
                             <div class="col-sm-10">
                                 {{ loginform.render('password') }}
                             </div>
                         </div>
-                        <div class="submitlogin">
+                        <div class="submitbtn">
                             <button type="submit" class="btn btn-primary">Ingresar</button>
                         </div>
                     </form>
@@ -55,12 +55,12 @@
             <div class="panel-body">
                 <form class="form-horizontal" method="post" id="rgform" action="{{ url.get() }}dashboard/register/sendMail">
                     <div class="form-group">
-                        <label for="rmail" class="col-sm-2 control-label">Correo</label>
+                        <label for="rmail" class="col-sm-2 control-label">Correo:</label>
                         <div class="col-sm-10">
                             {{ registerform.render('rmail') }}
                         </div>
                     </div>
-                    <div class="submitlogin">
+                    <div class="submitbtn">
                         <button type="submit" class="btn btn-warning" id="mailbtn">Siguiente</button>
                     </div>
                 </form>

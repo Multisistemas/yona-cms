@@ -13,7 +13,6 @@ class UserToken extends Model {
 	private $updated_at;
 
 	public function initialize() {
-        //$this->hasMany("id", $this->foreign, "foreign_id");
         $this->skipAttributes(array('id','created_at','updated_at'));
     }
 

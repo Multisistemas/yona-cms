@@ -3,6 +3,7 @@
 namespace Dashboard\Form;
 
 use Phalcon\Forms\Element\Text;
+use Phalcon\Forms\Element\Email;
 use Phalcon\Forms\Element\Password;
 use Phalcon\Validation\Validator\PresenceOf;
 
@@ -11,7 +12,7 @@ class LoginForm extends \Phalcon\Forms\Form
 
     public function initialize()
     {
-        $email = new Text('email', array(
+        $email = new Email('email', array(
             'required' => true,
             'placeholder' => 'Ingrese su correo',
             'class' => 'form-control',

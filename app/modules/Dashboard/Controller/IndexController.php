@@ -16,7 +16,6 @@ class IndexController extends Controller
     }
 
     public function loginAction() {
-    	$this->view->pick('index/login');
         $loginform = new LoginForm();
         $registerform = new RegisterForm();
 

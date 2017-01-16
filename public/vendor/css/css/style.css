@@ -74,7 +74,7 @@ footer {
   background-color:#33aa33;
 }
 
-.submitlogin {
+.submitbtn {
   text-align: right !important;
 }
 
@@ -115,3 +115,17 @@ div #loader {
 div #panel-register {
   display: none;
 }
+
+#input-hidden {
+  display: none;
+  visibility: hidden;
+}
+
+div#msgPass {
+  display: none;
+}
+
+div#msgPass2 {
+  display: none;
+}
+

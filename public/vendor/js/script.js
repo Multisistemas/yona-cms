@@ -1,15 +1,4 @@
-$(document).ready(function(){ 
-	/*$("#mailbtn").on("click",function(){
-	    $("#divloader").css("display", "block");
-	    $("#mailbtn").attr("disabled","true");
-    });
-
-    if ($("#rmail").val() != null) {
-    	$("#mailbtn").on("submit",function(){
-	    	$("#divloader").css("display", "block");
-	    	$("#mailbtn").attr("disabled","true");
-    	});
-	}*/
+$(document).ready(function(){
 
 	$("#rgform").submit(function(event){
 	  	$("#divloader").css("display", "block");
@@ -20,7 +9,20 @@ $(document).ready(function(){
     	$("#panel-login").fadeOut("slow");
     	$("#question-div").fadeOut("slow");
     	$("#panel-register").fadeIn("slow");
-    });
-
-
+    });  
 });
+
+function validatePass(){
+    var p1 = document.getElementById("pass").value;
+    var p2 = document.getElementById("pass2").value;
+    var msgPass = document.getElementById("msgPass");
+    var msgPass2 = document.getElementById("msgPass2");
+	    
+    if (p2 != p1) {
+    	msgPass.style.display = "block";
+    	msgPass2.style.display = "none";
+    } else if (p2 === p1) {
+    	msgPass2.style.display = "block";
+    	msgPass.style.display = "none";
+    }
+}
