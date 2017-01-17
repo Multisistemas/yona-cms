@@ -4,6 +4,7 @@ namespace Dashboard\Form;
 
 use Phalcon\Forms\Element\Text;
 use Phalcon\Forms\Element\Password;
+use Phalcon\Forms\Element\Email;
 use Phalcon\Validation\Validator\PresenceOf;
 
 class RegisterForm extends \Phalcon\Forms\Form
@@ -27,7 +28,7 @@ class RegisterForm extends \Phalcon\Forms\Form
         $password->addValidator(new PresenceOf(array('message' => 'La contraseña es requerida')));
         $this->add($password);
 
-        $rmail = new Text('rmail', array(
+        $rmail = new Email('rmail', array(
             'required' => true,
             'placeholder' => 'Ingrese su correo',
             'class' => 'form-control',
