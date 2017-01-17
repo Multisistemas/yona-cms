@@ -60,7 +60,7 @@ class IndexController extends Controller
                     $user = AdminUser::findFirst("login='$login'");
                     if ($user) {
                         if ($user->checkPassword($password)) {
-                            if ($user->isActive()) {
+                            if ($user->isActive()) { 
                                 $this->session->set('auth', $user->getAuthData());
                                 $this->flash->success($this->helper->translate("Welcome to the administrative control panel!"));
                                 return $this->redirect($this->url->get() . 'admin');

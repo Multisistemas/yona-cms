@@ -7,7 +7,7 @@
 	                <div class="panel-title">Invitar equipo</div>
 	            </div>
 	        	<div class="panel-body">
-	                <form class="form-horizontal" method="post" action="{{ url.get() }}dashboard/register/invite">
+	                <form class="form-horizontal" method="post" action="{{ url.get() }}dashboard/register/sendInvitations/1">
 	                	<div class="form-group">
 	                        <label for="mail1" class="col-sm-2 control-label">Correo:</label>
 	                        <div class="col-sm-10">

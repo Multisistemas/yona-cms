@@ -5,8 +5,9 @@
     </div>
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav navbar-right">
-      {% set tsession = session.has('opauth') %}
-      {% if tsession == true %}
+      {% if session.has('manual') or session.has('opauth') %}
+      {% set auth = session.get('manual') %}
+        <li class="active"><a href="">{{ auth.name }}</a></li>
         <li><a href="/dashboard/login/logout">Cerrar sesión</a></li>
       {% else %}
         <li><a href="/dashboard/index/login">Iniciar sesión / Registrarse</a></li>
@@ -15,11 +16,6 @@
     </div>
   </div>
 </nav>
-{% if tsession == true %}
-  <p>Sesion iniciada</p>
-{% else %}
-  <p>No hay sesiones iniciadas</p>
-{% endif %} 
 
 {% set languages = helper.languages() %}
 {% if languages|length > 1 %}

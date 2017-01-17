@@ -47,6 +47,8 @@ class LoginController extends Controller
     {   
         if ($this->session->has('opauth')) {
             $this->session->remove('opauth');
+        } else if ($this->session->has('manual')) {
+            $this->session->remove('manual');
         }
 
         $this->indexAction();
@@ -68,16 +70,6 @@ class LoginController extends Controller
             $object = get_object_vars( $object );
         }
         return array_map(array($this,"objectToArray"), $object );
-    }
-
-    public function successAction() {
-        $auths = $this->session->get('opauth');
-
-        $response = new Response;
-
-        $response->redirect("Index/index/index")->auths = $auths;
-
-        //$this->view->auths = $auths;
     }
 
     public function destroyAction()

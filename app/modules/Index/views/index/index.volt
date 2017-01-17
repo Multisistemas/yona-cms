@@ -8,10 +8,13 @@
                 </a>
             </div>
 
-            {% if thesession == true %}
-            <div class="jumbotron">
-                <h1>Bienvenido a Multisistemas</h1>
-            </div> 
+            {% if auth != null %}
+                <div class="jumbotron">
+                    <h1>Bienvenido</h1>
+                    <h2>{{ auth.name }}</h2>
+                    <p>Comienza a utilizar tus sistemas</p>
+                    <a href="/dashboard/index/show"><button type="button" class="btn btn-success">Ver sistemas</button></a>
+                </div>
             {% else %}
             <div class="jumbotron">
                 <h1>Bienvenido a Multisistemas</h1>

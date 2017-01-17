@@ -17,10 +17,11 @@
     <body>
         <div class="container">
             <div class="row">
-                {% if session.has('opauth') %}
+                {% if auth != null %}
                  <div class="col-md-12">
                     <div class="jumbotron">
                         <h1>Bienvenido a Multisistemas</h1>
+                        {{ auth.name }}
                     </div>
                 </div>   
                 {% else %}

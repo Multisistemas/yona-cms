@@ -10,15 +10,15 @@ use Dashboard\Model\User;
 use Dashboard\Model\UserToken;
 use Dashboard\Model\Company;
 use Dashboard\Model\CompanySystem;
+use Dashboard\Model\CompanyUser;
+use Dashboard\Model\RoleUser;
 use Phalcon\Http\Response;
 
 require_once SWIFT_LIB_DIR . 'swift_required.php';
 
 class RegisterController extends Controller
 {
-	/**
-     * La acción de inicio, permite buscar
-     */
+	
     public function indexAction() {
         
     }
@@ -31,40 +31,40 @@ class RegisterController extends Controller
 
     }
 
-    public function inviteAction($user){
-
-        var_dump($user);
+    public function inviteAction($user) {
         $inviteForm = new InviteForm();
         $this->view->inviteForm = $inviteForm;
-        $this->session->set('manual', $this->objectToArray($user));
+        
+        $this->setSession($user);
     }
 
-    public function sendInvitationsAction(){
+    public function setSession($user) {
+        $this->session->set('manual', $user->getAuthData());
+    }
+
+    public function sendInvitationsAction($bool){
         $post = $this->request->getPost();
         if ($post["email1"] != null) {
             $email = $post["email1"];
-            $this->sendMailAction($email);
+            $this->sendMailAction($email, $bool);
         }
 
         if ($post["email2"] != null) {
             $email = $post["email2"];
-            $this->sendMailAction($email);
+            $this->sendMailAction($email, $bool);
         }
 
         if ($post["email3"] != null) {
             $email = $post["email3"];
-            $this->sendMailAction($email);
+            $this->sendMailAction($email, $bool);
         }
 
-        $response = new Response;
-
-        $response->redirect("/");
+        return $this->redirect($this->url->get() . 'index');
 
         /*$this->dispatcher->forward(
             [
-                "controller" => "register",
-                "action" => "nextstep",
-                "params" => [1, 'felmedranop@gmail.com']
+                "controller" => "index",
+                "action" => "index",
             ]
         );*/
     }
@@ -93,56 +93,75 @@ class RegisterController extends Controller
     public function updateAction() {
 
         $post = $this->request->getPost();
+        $user = User::findFirstById($post["id"]);
 
         $company = new Company();
         $company->setName($post["company"]);
-        
 
         try {
 
             if ($company->save()) {
-                $companySys = new CompanySystem();
+                $companyFind = Company::findFirstByName($post["company"]);
 
-                $companySys->setCompanyId(Company::findFirstByName($post["company"])->getId());
-                $companySys->setSystemId($post["system"]);
+                $this->saveCompanyUser($companyFind, $user);
+                $this->saveRoleUser($user);
+                $this->saveCompanySystem($companyFind->getId(), $post["system"]);
+
+                $user->setName($post["name"]);
+                $user->setPass($post["password"]);
+                $user->setActive(1);
+                $user->setSessionType("manual");
 
                 try {
 
-                    if ($companySys->save()) {
-                        $user = User::findFirstById($post["id"]);
+                    if($user->save());
+                        $this->dispatcher->forward(
+                            [
+                                "controller"    => "register",
+                                "action"        => "invite",
+                                "params"        => [$user],
+                            ]
+                        );
 
-                        $user->setName($post["name"]);
-                        $user->setPass($post["password"]);
-                        $user->setActive(1);
-
-                        try {
-
-                            if($user->save());
-                                $this->dispatcher->forward(
-                                    [
-                                        "controller"    => "register",
-                                        "action"        => "invite",
-                                        "params"        => [$user],
-                                    ]
-                                );
-
-                        } catch (Exception $e) {
-                            echo 'Ha ocurrido un error: ',  $e->getMessage(), "\n";
-                        } 
-                    }
-
-                } catch (Exception $e) {
-                    echo 'Ha ocurrido un error: ',  $e->getMessage(), "\n";
-                }
+                    } catch (Exception $e) {
+                        echo 'Ha ocurrido un error: ',  $e->getMessage(), "\n";
+                } 
             }
+
         } catch (Exception $e) {
             echo 'Ha ocurrido un error: ',  $e->getMessage(), "\n";
         }
         
     }
 
+    public function saveCompanyUser($company, $user) {
+        $company_user = new CompanyUser();
 
-    public function sendMailAction($data = null) {
+        $company_user->setCompanyId($company->getId());
+        $company_user->setUserId($user->getId());
+
+        $company_user->save();
+    }
+
+    public function saveRoleUser($user) {
+        $role_user = new RoleUser();
+
+        $role_user->setRoleId(1);
+        $role_user->setUserId($user->getId());
+
+        $role_user->save();
+    }
+
+    public function saveCompanySystem($companyId, $system) {
+        $companySys = new CompanySystem();
+
+        $companySys->setCompanyId($companyId);
+        $companySys->setSystemId($system);
+
+        $companySys->save();
+    }
+
+    public function sendMailAction($data = null, $bool = null) {
         if ($data != null) {
             $email = $data;
         } else {
@@ -150,8 +169,6 @@ class RegisterController extends Controller
         }
         
         $saved_email = $this->newAction($email);
-
-        var_dump($saved_email);
 
         if ($saved_email == false) {
             $this->flash->error('Ha ocurrido un error al almacenar el correo');
@@ -171,7 +188,7 @@ class RegisterController extends Controller
                 
                     if ($user_token->save()) {
                        $result = $this->swiftSend($token, $saved_email);
-                       if ($result) {
+                       if ($bool == null) {
                            $this->dispatcher->forward(
                                 [
                                     "controller" => "register",
@@ -272,8 +289,10 @@ class RegisterController extends Controller
         );
     }
 
-    public function showAction($send) {
+    public function showAction($send = null) {
         
+        var_dump($companyFind = User::findFirstByEmail("lmedrano@multisistemas.com.sv"));
+        /*
         if ($send == 1) {
             $this->dispatcher->forward(
             [
@@ -292,6 +311,6 @@ class RegisterController extends Controller
         }
         
 
-
+        */
     }
 }
