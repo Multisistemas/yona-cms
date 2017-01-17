@@ -8,7 +8,7 @@
                 </a>
             </div>
 
-            {% if auth != null %}
+            {% if session.has('opauth') or session.has('manual') %}
                 <div class="jumbotron">
                     <h1>Bienvenido</h1>
                     <h2>{{ auth.name }}</h2>

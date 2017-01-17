@@ -17,11 +17,20 @@
     <body>
         <div class="container">
             <div class="row">
-                {% if auth != null %}
+                {% if session.has('opauth') or session.has('manual') %}
                  <div class="col-md-12">
                     <div class="jumbotron">
-                        <h1>Bienvenido a Multisistemas</h1>
-                        {{ auth.name }}
+                        <h2>{{ auth.name }}</h2>
+                        {% if system != null %}
+                        <p>Estos son los sistemas que ha elegido:</p>
+                            {% if system == "ERP" %}
+                                <a href="#"><button type="button" class="btn btn-primary">Ir a ERP</button></a>
+                            {% elseif system == "DMS" %}
+                                <a href="#"><button type="button" class="btn btn-warning">Ir a DMS</button></a>
+                            {% elseif system == "LMS" %}
+                                <a href="#"><button type="button" class="btn btn-info">Ir a LMS</button></a>
+                            {% endif %}
+                        {% endif %}
                     </div>
                 </div>   
                 {% else %}

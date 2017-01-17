@@ -48,8 +48,7 @@ class User extends Model {
         }
     }
 
-    public function getAuthData()
-    {
+    public function getAuthData() {
         $authData = new stdClass();
         $authData->id = $this->getId();
         $authData->session_type = $this->getSessionType();
@@ -59,7 +58,11 @@ class User extends Model {
         return $authData;
     }
 
-    
+    public function checkPassword($password) {
+        if (password_verify($password, $this->pass)) {
+            return true;
+        }
+    }
 
     public function setActive($active) { $this->active = $active; }
 

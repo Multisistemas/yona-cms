@@ -6,18 +6,26 @@ use Application\Mvc\Controller;
 use Dashboard\Form\LoginForm;
 use Dashboard\Form\RegisterForm;
 use Phalcon\Mvc\View;
+use Dashboard\Model\CompanyUser;
+use Dashboard\Model\CompanySystem;
+use Dashboard\Model\System;
 
 
 class IndexController extends Controller
 {
 
-    public function indexAction() {
+    public function indexAction($system = null) {
         if ($this->session->has('manual')) {
-        	$auth = $this->session->get('manual');
+        	$manual = $this->session->get('manual');
         	$this->view->auth = $manual;
         } else if ($this->session->has('opauth')) {
-        	$auth = $this->session->get('opauth');
-        	$this->view->auth = $auth;
+        	$opauth = $this->session->get('opauth');
+        	$this->view->auth = $opauth;
+        } 
+
+        if ($system != null) {
+        	$systemUser = $system->getShortname();
+        	$this->view->system = $systemUser;
         }
     }
 
@@ -36,7 +44,25 @@ class IndexController extends Controller
 
         $response->redirect("index/index")->auths = $auths;
 
-        //$this->view->auths = $auths;
+    }
+
+    public function showAction(){
+
+    	$user = $this->session->get('manual');
+    	
+    	$companyUser = CompanyUser::findFirstByUserId($user->id);
+
+    	$companySys = CompanySystem::findFirstByCompanyId($companyUser->getCompanyId());
+    	
+    	$system = System::findFirstById($companySys->getSystemId());
+
+    	$this->dispatcher->forward(
+            [
+                "controller"    => "index",
+                "action"        => "index",
+                "params"        => [$system],
+            ]
+        );
     }
 
 }

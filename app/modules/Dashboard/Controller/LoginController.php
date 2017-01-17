@@ -5,6 +5,7 @@ namespace Dashboard\Controller;
 use Application\Mvc\Controller;
 use Phalcon\Mvc\View;
 use Phalcon\Http\Response;
+use Dashboard\Model\User;
 
 require_once OPAUTH_LIB_DIR . 'Opauth.php';
 
@@ -27,8 +28,34 @@ class LoginController extends Controller
         $this->view->disable();
     }
 
-    public function loginManual(){
+    public function loginManualAction(){
+        if ($this->request->isPost()) {
 
+                    $email = $this->request->getPost('email');
+                    $password = $this->request->getPost('password');
+                    $user = User::findFirstByEmail($email);
+                    if ($user) {
+                        if ($user->checkPassword($password)) {
+                            if ($user->isActive()) { 
+                                $this->session->set('manual', $user->getAuthData());
+                                $this->dispatcher->forward(
+                                    [
+                                        "controller"    => "index",
+                                        "action"        => "show",
+                                    ]
+                                );
+                            } else {
+                                $this->flash->error($this->helper->translate("User is not activated yet"));
+                            }
+                        } else {
+                            $this->flash->error($this->helper->translate("Incorrect login or password"));
+                        }
+                    } else {
+                        $this->flash->error($this->helper->translate("Incorrect login or password"));
+                    }
+              
+
+        }
     }
 
     public function login() {
