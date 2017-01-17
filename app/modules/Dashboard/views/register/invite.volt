@@ -27,7 +27,7 @@
 	                        </div>
                         </div>
                         <div class="submitbtn">
-                            <a href="/index/index"><button type="button" class="btn btn-default">Omitir</button></a>
+                            <a href="/"><button type="button" class="btn btn-default">Omitir</button></a>
                         </div>
                         <div class="submitbtn">
                             <button type="submit" class="btn btn-warning">Siguiente</button>

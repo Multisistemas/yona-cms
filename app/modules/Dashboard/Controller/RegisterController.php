@@ -32,6 +32,8 @@ class RegisterController extends Controller
     }
 
     public function inviteAction($user){
+
+        var_dump($user);
         $inviteForm = new InviteForm();
         $this->view->inviteForm = $inviteForm;
         $this->session->set('manual', $this->objectToArray($user));
@@ -41,22 +43,22 @@ class RegisterController extends Controller
         $post = $this->request->getPost();
         if ($post["email1"] != null) {
             $email = $post["email1"];
-            $this->sendMailAction($email)
+            $this->sendMailAction($email);
         }
 
         if ($post["email2"] != null) {
             $email = $post["email2"];
-            $this->sendMailAction($email)
+            $this->sendMailAction($email);
         }
 
         if ($post["email3"] != null) {
             $email = $post["email3"];
-            $this->sendMailAction($email)
+            $this->sendMailAction($email);
         }
 
         $response = new Response;
 
-        $response->redirect("Index/index/index");
+        $response->redirect("/");
 
         /*$this->dispatcher->forward(
             [
@@ -144,10 +146,12 @@ class RegisterController extends Controller
         if ($data != null) {
             $email = $data;
         } else {
-            $email = $this->request->getPost();    
+            $email = $this->request->getPost("rmail");    
         }
         
         $saved_email = $this->newAction($email);
+
+        var_dump($saved_email);
 
         if ($saved_email == false) {
             $this->flash->error('Ha ocurrido un error al almacenar el correo');

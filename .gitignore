@@ -1,3 +1,4 @@
 .idea/
+app/config/environment/development.php
 composer.lock
 composer.phar
