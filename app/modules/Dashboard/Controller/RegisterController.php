@@ -31,33 +31,56 @@ class RegisterController extends Controller
 
     }
 
-    public function inviteAction($success){
-        if ($success == 1 || $success == true) {
-            $inviteForm = new InviteForm();
-
-            $this->view->success = $success;
-            $this->view->inviteForm = $inviteForm;
-
-        } else {
-            echo 'Ha ocurrido un error con la solicitud';
-        }
+    public function inviteAction($user){
+        $inviteForm = new InviteForm();
+        $this->view->inviteForm = $inviteForm;
+        $this->session->set('manual', $this->objectToArray($user));
     }
 
+    public function sendInvitationsAction(){
+        $post = $this->request->getPost();
+        if ($post["email1"] != null) {
+            $email = $post["email1"];
+            $this->sendMailAction($email)
+        }
 
-    public function newAction($post)
+        if ($post["email2"] != null) {
+            $email = $post["email2"];
+            $this->sendMailAction($email)
+        }
+
+        if ($post["email3"] != null) {
+            $email = $post["email3"];
+            $this->sendMailAction($email)
+        }
+
+        $response = new Response;
+
+        $response->redirect("Index/index/index");
+
+        /*$this->dispatcher->forward(
+            [
+                "controller" => "register",
+                "action" => "nextstep",
+                "params" => [1, 'felmedranop@gmail.com']
+            ]
+        );*/
+    }
+
+    public function newAction($email)
     {
 
         $user = new User;
 
         $user->setName(null);
-        $user->setEmail($post["rmail"]);
+        $user->setEmail($email);
         $user->setPass(null);
         $user->setActive(0);
         $user->setSuspended(0);
         $user->setDeleted(0);
 
         if ($user->save()) {
-            return $post["rmail"];
+            return $email;
         } else {
             return false;
         }
@@ -95,9 +118,9 @@ class RegisterController extends Controller
                             if($user->save());
                                 $this->dispatcher->forward(
                                     [
-                                        "controller" => "register",
-                                        "action" => "invite",
-                                        "params" => [1]
+                                        "controller"    => "register",
+                                        "action"        => "invite",
+                                        "params"        => [$user],
                                     ]
                                 );
 
@@ -117,10 +140,14 @@ class RegisterController extends Controller
     }
 
 
-    public function sendMailAction() {
+    public function sendMailAction($data = null) {
+        if ($data != null) {
+            $email = $data;
+        } else {
+            $email = $this->request->getPost();    
+        }
         
-        $post = $this->request->getPost();
-        $saved_email = $this->newAction($post);
+        $saved_email = $this->newAction($email);
 
         if ($saved_email == false) {
             $this->flash->error('Ha ocurrido un error al almacenar el correo');

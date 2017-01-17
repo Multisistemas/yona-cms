@@ -73,25 +73,11 @@ class LoginController extends Controller
     public function successAction() {
         $auths = $this->session->get('opauth');
 
-        $this->view->pick('login/success');
+        $response = new Response;
 
-        $modules = array( 'modules' => array(
-                'ERP: Entreprise Resources Planning' => 'https://mseicorp.com/erp',
-                'DMS: Document Management System' => 'https://mseicorp.com/wiki',
-                'LMS: Learning Management System' => 'https://mseicorp.com/lms',
-                'Multisistemas Website' => 'http://multisistemas.com.sv',
-                'Gestión Total Website' => 'http://gestiontotal.net',
-                'Google Drive' => 'http://docs.multisistemas.com.sv',
-                'Google Mail' => 'https://mail.google.com',
-        ));
-             
-        $manuals = array( 'manuals' => array(
-                'Manual de Usuario ERP' => 'http://manualdolibarr.com/guia-dolibarr37.php',
-                'Manual de Usuario DMS' => 'https://www.dokuwiki.org/start?id=es:manual',
-                'Guía rápida LMS' => 'https://docs.moodle.org/all/es/Gu%C3%ADa_r%C3%A1pida_del_usuario',
-        ));
+        $response->redirect("Index/index/index")->auths = $auths;
 
-        $this->view->auths = array_merge($auths, $modules, $manuals);
+        //$this->view->auths = $auths;
     }
 
     public function destroyAction()
