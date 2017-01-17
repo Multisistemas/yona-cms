@@ -71,6 +71,7 @@ class Bootstrap
         $session->start();
         $di->set('session', $session);
 
+        // Request
         $request = new \Phalcon\Http\Request;
         $di->set('request', $request);
 

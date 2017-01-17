@@ -4,9 +4,12 @@ namespace Dashboard\Controller;
 
 use Application\Mvc\Controller;
 use Dashboard\Form\RegisterForm;
+use Dashboard\Form\InviteForm;
 use Phalcon\Mvc\View;
 use Dashboard\Model\User;
 use Dashboard\Model\UserToken;
+use Dashboard\Model\Company;
+use Dashboard\Model\CompanySystem;
 use Phalcon\Http\Response;
 
 require_once SWIFT_LIB_DIR . 'swift_required.php';
@@ -24,18 +27,23 @@ class RegisterController extends Controller
         $this->view->success = $success;
     }
 
-    /**
-     * Realiza la búsqueda basada en los parámetros de usuario
-     * devolviendo un paginador
-     */
-    public function searchAction()
-    {
-        // ...
+    public function search() {
+
     }
 
-    /**
-     * Muestra la vista de crear
-     */
+    public function inviteAction($success){
+        if ($success == 1 || $success == true) {
+            $inviteForm = new InviteForm();
+
+            $this->view->success = $success;
+            $this->view->inviteForm = $inviteForm;
+
+        } else {
+            echo 'Ha ocurrido un error con la solicitud';
+        }
+    }
+
+
     public function newAction($post)
     {
 
@@ -57,37 +65,57 @@ class RegisterController extends Controller
         $this->view->disable();
     }
 
-    /**
-     * Muestra la vista para editar
-     */
-    public function editAction()
-    {
-        // ...
+    public function updateAction() {
+
+        $post = $this->request->getPost();
+
+        $company = new Company();
+        $company->setName($post["company"]);
+        
+
+        try {
+
+            if ($company->save()) {
+                $companySys = new CompanySystem();
+
+                $companySys->setCompanyId(Company::findFirstByName($post["company"])->getId());
+                $companySys->setSystemId($post["system"]);
+
+                try {
+
+                    if ($companySys->save()) {
+                        $user = User::findFirstById($post["id"]);
+
+                        $user->setName($post["name"]);
+                        $user->setPass($post["password"]);
+                        $user->setActive(1);
+
+                        try {
+
+                            if($user->save());
+                                $this->dispatcher->forward(
+                                    [
+                                        "controller" => "register",
+                                        "action" => "invite",
+                                        "params" => [1]
+                                    ]
+                                );
+
+                        } catch (Exception $e) {
+                            echo 'Ha ocurrido un error: ',  $e->getMessage(), "\n";
+                        } 
+                    }
+
+                } catch (Exception $e) {
+                    echo 'Ha ocurrido un error: ',  $e->getMessage(), "\n";
+                }
+            }
+        } catch (Exception $e) {
+            echo 'Ha ocurrido un error: ',  $e->getMessage(), "\n";
+        }
+        
     }
 
-    /**
-     * Crea
-     */
-    public function createAction()
-    {
-        // ...
-    }
-
-    /**
-     * Actualiza
-     */
-    public function saveAction()
-    {
-        // ...
-    }
-
-    /**
-     * Elimina
-     */
-    public function deleteAction($id)
-    {
-        // ...
-    }
 
     public function sendMailAction() {
         
@@ -112,14 +140,15 @@ class RegisterController extends Controller
                 
                     if ($user_token->save()) {
                        $result = $this->swiftSend($token, $saved_email);
-                       $this->dispatcher->forward(
-                            [
-                                "controller" => "register",
-                                "action" => "sent",
-                                "params" => [1],
-                                "namespace" => "Dashboard\Controller"
-                            ]
-                        );
+                       if ($result) {
+                           $this->dispatcher->forward(
+                                [
+                                    "controller" => "register",
+                                    "action" => "sent",
+                                    "params" => [1]
+                                ]
+                            );
+                        }
                     }
 
                 } catch (Exception $e) {
@@ -127,8 +156,6 @@ class RegisterController extends Controller
                 }
             }
         }
-
-    	$this->view->disable();
     }
 
     private function swiftSend($token = NULL, $saved_email) {
@@ -173,48 +200,66 @@ class RegisterController extends Controller
         return array_map(array($this,"objectToArray"), $object );
     }
 
-    public function showAction() {
-        //echo $token = bin2hex(openssl_random_pseudo_bytes(16));
-        //echo function_exists('proc_open') ? "Yep, that will work" : "Sorry, that won't work";
-        //var_dump("http://".$_SERVER['HTTP_HOST'].'/dashboard/login/loginManual');
+    public function validateAction($token) {
+        $user_token = UserToken::findFirstByToken($token);
 
-        /*$parameters = $this->objectToArray($this->config->swift);
+        if ($user_token != false) {
+            $user = User::findFirstById($user_token->getUserId());
 
-        $transport = \Swift_SmtpTransport::newInstance($parameters['server'], $parameters['port'])
-            ->setUsername($parameters['username'])
-            ->setPassword($parameters['password']);
+            $id = $user->getId();
+            $email = $user->getEmail();
+            $this->dispatcher->forward(
+                [
+                    'controller'    => 'register',
+                    'action'        => 'nextstep',
+                    'params'        => [$id, $email],    
+                ]
+            );
+        } else {
+            $this->dispatcher->forward(
+                [
+                    'controller'    => 'register',
+                    'action'        => 'invalid'    
+                ]
+            );
+        }
 
-        $mailer = \Swift_Mailer::newInstance($transport);
+    }
 
+    public function invalidAction(){
 
-        $message = \Swift_Message::newInstance('Confirmación de cuenta')
-          ->setFrom(array('no-reply@multisistemax.com' => 'Multisistemas Team'))
-          ->setTo(array('lmedrano@multisistemas.com.sv'))
-          ->addPart('<h1>Mensaje enviado desde Multisistemas Dashboard</h1>
-               <p>Email: lmedrano@multisistemas.com.sv</p>
-               <p>Mensaje: Haga click en el siguiente enlace para verificar su correo:</p>'.
-                '<p>http://'.$_SERVER['HTTP_HOST'].'/dashboard/register/validate/'
-                .'</p>', 'text/html');
+    }
 
-        try {
-            
-            if ($result = $mailer->send($message)) {
-                echo "Mensaje enviado con exito";
-            }
-
-        } catch (Exception $e) {
-            echo 'Ha ocurrido un error: ',  $e->getMessage(), "\n";
-        } */
-
-        // Getting a response instance
-        $this->dispatcher->forward(
+    public function nextstepAction($id, $email){
+        $registerform = new RegisterForm;
+        $this->view->setVars(
             [
-                "controller" => "register",
-                "action" => "sent",
-                "params" => [1],
-                "namespace" => "Dashboard\Controller",
+                "id"            => $id,
+                "email"         => $email,
+                "registerform"  => $registerform,
             ]
         );
+    }
+
+    public function showAction($send) {
+        
+        if ($send == 1) {
+            $this->dispatcher->forward(
+            [
+                "controller" => "register",
+                "action" => "nextstep",
+                "params" => [1, 'felmedranop@gmail.com']
+            ]
+        );
+        } else {
+            $this->dispatcher->forward(
+            [
+                "controller" => "index",
+                "action" => "index"
+            ]
+        );
+        }
+        
 
 
     }

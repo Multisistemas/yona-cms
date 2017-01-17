@@ -20,14 +20,9 @@
     <link href="{{ url.path() }}vendor/semantic-2.1/semantic.min.css" rel="stylesheet" type="text/css">
     <link href="{{ url.path() }}vendor/font-awesome-4.2.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <!--/css libs-->
-
-    <!-- Bootstrap -->
-    
-    <!--/css bootstrap -->
-
     
     <!--<link href="{{ url.path() }}static/less/style.less" rel="stylesheet/less" type="text/css">-->
-    
+    <script src="{{ url.path() }}vendor/js/jquery-1.11.0.min.js"></script>
     
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -47,8 +42,6 @@
 <div id="wrapper">
     {{ content() }}
 </div>
-
-    <script src="{{ url.path() }}vendor/js/jquery-3.1.1.min.js"></script>
     <script src="{{ url.path() }}vendor/js/script.js"></script>
 </body>
 </html>
