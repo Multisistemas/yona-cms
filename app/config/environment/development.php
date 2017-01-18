@@ -9,7 +9,7 @@ return [
         'host'     => 'localhost',
         'username' => 'root',
         'password' => 'toor',
-        'dbname'   => 'yona-cms',
+        'dbname'   => 'yona',
         'charset'  => 'utf8',
     ],
 
