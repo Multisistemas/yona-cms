@@ -22,7 +22,7 @@ header .languages {
 }
 
 footer {
-  position: absolute;
+  position: fixed;
   bottom: 0;
   width: 100%;
   /* Set the fixed height of the footer here */
@@ -78,13 +78,13 @@ footer {
   text-align: right !important;
 }
 
-#divloader {
+.divloader {
   display: none;
   text-align: center;
   padding: 20px;
 }
 
-div #loader {
+div .loader {
   position: absolute;
   left: 80%;
   top: 70%;
@@ -127,4 +127,21 @@ div#msgPass {
 
 div#msgPass2 {
   display: none;
+}
+
+.img-circle {
+  max-height: 30px !important;
+  max-width: 30px !important;
+}
+
+.special-img {
+    position: relative !important;
+    top: -5px !important;
+    float: left !important;
+    left: -5px !important;
+}
+
+a .profile-image  {
+  padding-top: 0px !important;
+  padding-bottom: 0px !important;
 }

@@ -7,7 +7,7 @@
 	                <div class="panel-title">Invitar equipo</div>
 	            </div>
 	        	<div class="panel-body">
-	                <form class="form-horizontal" method="post" action="{{ url.get() }}dashboard/register/sendInvitations/1">
+	                <form class="form-horizontal" id="inviteform" method="post" action="{{ url.get() }}dashboard/register/sendInvitations/1">
 	                	<div class="form-group">
 	                        <label for="mail1" class="col-sm-2 control-label">Correo:</label>
 	                        <div class="col-sm-10">
@@ -26,16 +26,19 @@
 	                            {{ inviteForm.render('email3') }}
 	                        </div>
                         </div>
+                        
                         <div class="submitbtn">
-                            <a href="/"><button type="button" class="btn btn-default">Omitir</button></a>
+                        	<a href="/"><button type="button" class="btn btn-default">Omitir</button></a>
+                            <button type="submit" class="btn btn-warning" id="invitebtn">Siguiente</button>
                         </div>
-                        <div class="submitbtn">
-                            <button type="submit" class="btn btn-warning">Siguiente</button>
-                        </div>
-                    </div>
 	                </form>
 	            </div>
 	        </div>
+	        <div class="divloader">
+                <p><b>Espere mientras se le envía el correo de verificación</b></p>
+                <br>
+                <span><div class="loader"></div></span>
+            </div>
 	    </div>
 	    <div class="col-md-3"></div>
    	</div>

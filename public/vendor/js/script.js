@@ -1,9 +1,13 @@
 $(document).ready(function(){
-
 	$("#rgform").submit(function(event){
-	  	$("#divloader").css("display", "block");
+	  	$(".divloader").css("display", "block");
 		$("#mailbtn").attr("disabled","true");
 	});
+
+    $("#inviteform").submit(function(event){
+        $(".divloader").css("display", "block");
+        $("#invitebtn").attr("disabled","true");
+    });
 
     $("#question-div").on("click", function(){
     	$("#panel-login").fadeOut("slow");

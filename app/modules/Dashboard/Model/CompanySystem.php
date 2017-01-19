@@ -17,6 +17,18 @@ class CompanySystem extends Model {
 
 	public function initialize() {
         $this->skipAttributes(array('id','created_at','updated_at','created_by','updated_by'));
+
+        $this->belongsTo(
+        	"company_id",
+        	"Company",
+        	"id"
+        );
+
+        $this->belongsTo(
+        	"system_id",
+        	"System",
+        	"id"
+        );
     }
 
 	public function getId() { return $this->id; }

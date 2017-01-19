@@ -11,6 +11,7 @@ use Dashboard\Model\UserToken;
 use Dashboard\Model\Company;
 use Dashboard\Model\CompanySystem;
 use Dashboard\Model\CompanyUser;
+use Dashboard\Model\System;
 use Dashboard\Model\RoleUser;
 use Phalcon\Http\Response;
 
@@ -27,15 +28,30 @@ class RegisterController extends Controller
         $this->view->success = $success;
     }
 
-    public function search() {
+    public function searchAction($email, $verified = null) {
+        $this->view->disable();
+
+        if ($verified != null) {
+            $user = User::findFirstByEmail($email);
+
+            if ($user) {
+                $this->dispatcher->forward(
+                    [
+                        'controller' => 'index',
+                        'action' => 'index'
+                    ]
+                );
+            }
+        }
+        
 
     }
 
-    public function inviteAction($user) {
+    public function inviteAction($user = null) {
         $inviteForm = new InviteForm();
         $this->view->inviteForm = $inviteForm;
         
-        $this->setSession($user);
+        //$this->setSession($user);
     }
 
     public function setSession($user) {
@@ -61,12 +77,6 @@ class RegisterController extends Controller
 
         return $this->redirect($this->url->get() . 'index');
 
-        /*$this->dispatcher->forward(
-            [
-                "controller" => "index",
-                "action" => "index",
-            ]
-        );*/
     }
 
     public function newAction($email)
@@ -226,7 +236,7 @@ class RegisterController extends Controller
 
         try {
             
-            if ($result = $mailer->send($message)) {
+            if ($mailer->send($message)) {
                 return true;
             }
 
@@ -289,28 +299,13 @@ class RegisterController extends Controller
         );
     }
 
-    public function showAction($send = null) {
+    public function showAction() {
         
-        var_dump($companyFind = User::findFirstByEmail("lmedrano@multisistemas.com.sv"));
-        /*
-        if ($send == 1) {
-            $this->dispatcher->forward(
-            [
-                "controller" => "register",
-                "action" => "nextstep",
-                "params" => [1, 'felmedranop@gmail.com']
-            ]
-        );
-        } else {
-            $this->dispatcher->forward(
-            [
-                "controller" => "index",
-                "action" => "index"
-            ]
-        );
-        }
-        
+        $user = User::findFirstByEmail("lmedrano@multisistemas.com.sv");
 
-        */
+        foreach ($user->companyUser as $userCom) {
+            var_dump($userCom->company->name);
+        }
+
     }
 }

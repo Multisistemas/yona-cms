@@ -22,7 +22,9 @@
     <!--/css libs-->
     
     <!--<link href="{{ url.path() }}static/less/style.less" rel="stylesheet/less" type="text/css">-->
-    
+    <script src="{{ url.path() }}vendor/js/jquery-3.1.1.min.js"></script>
+    <script src="{{ url.path() }}vendor/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="{{ url.path() }}vendor/js/script.js"></script>
     
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -42,7 +44,6 @@
 <div id="wrapper">
     {{ content() }}
 </div>
-    <script src="{{ url.path() }}vendor/js/jquery-1.11.0.min.js"></script>
-    <script src="{{ url.path() }}vendor/js/script.js"></script>
+    
 </body>
 </html>

@@ -22,6 +22,35 @@ class User extends Model {
 
 	public function initialize() {
         $this->skipAttributes(array('id','created_at','updated_at','created_by','updated_by'));
+
+        $this->hasMany(
+            "id",
+            "UserToken",
+            "user_id"
+        );
+
+        $this->hasMany(
+            "id",
+            "Dashboard\\Model\\CompanyUser",
+            "user_id",
+            ['alias'=>'companyUser']
+        );
+
+        $this->hasMany(
+            "id",
+            "Dashboard\\Model\\RoleUser",
+            "user_id",
+            ['alias'=>'roleUser']
+        );
+
+        $this->hasManyToMany(
+            "id",
+            "dashboard\\Model\\CompanyUser",
+            "user_id", "company_id",
+            "Dashboard\\Model\\Company",
+            "id"
+        );
+
     }
 
     public function getId() { return $this->id; }

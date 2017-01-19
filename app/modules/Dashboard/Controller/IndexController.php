@@ -37,15 +37,6 @@ class IndexController extends Controller
         $this->view->registerform = $registerform;
     }
 
-    public function successAction() {
-        $auths = $this->session->get('opauth');
-
-        $response = new Response;
-
-        $response->redirect("index/index")->auths = $auths;
-
-    }
-
     public function showAction(){
 
     	$user = $this->session->get('manual');

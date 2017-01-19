@@ -14,6 +14,12 @@ class UserToken extends Model {
 
 	public function initialize() {
         $this->skipAttributes(array('id','created_at','updated_at'));
+
+        $this->belongsTo(
+        	"user_id",
+        	"User",
+        	"id"
+        );
     }
 
 	public function getId() { return $this->id; }

@@ -7,6 +7,7 @@
                 <div class="panel-title">Iniciar sesión</div>
             </div>
                 <div class="panel-body" >
+                    {{ flash.output() }}
                     <form class="form-horizontal" method="post" action="{{ url.get() }}dashboard/login/loginManual">
                         <div class="form-group">
                             <label for="email" class="col-sm-2 control-label">Correo:</label>
@@ -66,10 +67,10 @@
                 </form>
             </div>
             </div>
-            <div id="divloader">
+            <div class="divloader">
                 <p><b>Espere mientras se le envía el correo de verificación</b></p>
                 <br>
-                <span><div id="loader"></div></span>
+                <span><div class="loader"></div></span>
             </div>
         </div>
         <div class="col-md-3"></div>

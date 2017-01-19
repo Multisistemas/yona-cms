@@ -29,32 +29,33 @@ class LoginController extends Controller
     }
 
     public function loginManualAction(){
+
         if ($this->request->isPost()) {
-
-                    $email = $this->request->getPost('email');
-                    $password = $this->request->getPost('password');
-                    $user = User::findFirstByEmail($email);
-                    if ($user) {
-                        if ($user->checkPassword($password)) {
-                            if ($user->isActive()) { 
-                                $this->session->set('manual', $user->getAuthData());
-                                $this->dispatcher->forward(
-                                    [
-                                        "controller"    => "index",
-                                        "action"        => "show",
-                                    ]
-                                );
-                            } else {
-                                $this->flash->error($this->helper->translate("User is not activated yet"));
-                            }
-                        } else {
-                            $this->flash->error($this->helper->translate("Incorrect login or password"));
-                        }
+            $email = $this->request->getPost('email');
+            $password = $this->request->getPost('password');
+            $user = User::findFirstByEmail($email);
+            if ($user) {
+                if ($user->checkPassword($password)) {
+                    if ($user->isActive()) { 
+                        $this->session->set('manual', $user->getAuthData());
+                        $this->dispatcher->forward(            
+                            [
+                                "controller"    => "index",
+                                "action"        => "show",        
+                            ]
+                        );
                     } else {
-                        $this->flash->error($this->helper->translate("Incorrect login or password"));
+                        $this->redirect($this->url->get() . 'dashboard/index/login');
+                        $this->flash->error($this->helper->translate("El usuario no se encuentra activo"));
                     }
-              
-
+                } else {
+                    $this->redirect($this->url->get() . 'dashboard/index/login');
+                    $this->flash->error($this->helper->translate("Contraseña incorrecta"));
+                }
+            } else {
+                $this->redirect($this->url->get() . 'dashboard/index/login');
+                $this->flash->error($this->helper->translate("Correo o contraseña incorrectos"));
+            }
         }
     }
 
@@ -97,6 +98,23 @@ class LoginController extends Controller
             $object = get_object_vars( $object );
         }
         return array_map(array($this,"objectToArray"), $object );
+    }
+
+    public function successAction() {
+        $this->view->disable();
+        $auth = $this->session->get('opauth');
+
+        $email = $auth["auth"]["raw"]["email"];
+        $verified = $auth["auth"]["raw"]["email"];
+        
+        $this->dispatcher->forward( 
+            [
+                'controller'    => 'register',
+                'action'        => 'search',
+                'params'        => [$email, $verified];
+            ]
+        );
+        //$response->redirect("index/index")->auths = $auths;
     }
 
     public function destroyAction()

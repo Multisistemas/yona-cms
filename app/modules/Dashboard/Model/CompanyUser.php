@@ -9,7 +9,6 @@ class CompanyUser extends Model {
 	private $id;
 	private $user_id;
 	private $company_id;
-
 	private $created_at;
 	private $updated_at;
 	private $created_by;
@@ -17,6 +16,20 @@ class CompanyUser extends Model {
 
 	public function initialize() {
         $this->skipAttributes(array('id','created_at','updated_at','created_by','updated_by'));
+
+        $this->belongsTo(
+        	"user_id",
+        	"Dashboard\\Model\\User",
+        	"id",
+        	['alias' => 'user']
+        );
+
+        $this->belongsTo(
+        	"company_id",
+        	"Dashboard\\Model\\Company",
+        	"id",
+        	['alias' => 'company']
+        );
     }
 
 	public function getId() { return $this->id; }

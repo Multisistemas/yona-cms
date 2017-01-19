@@ -4,12 +4,12 @@ namespace Dashboard\Model;
 
 use Phalcon\Mvc\Model;
 
-class RoleUser extends Model {
+class Permission extends Model {
 
 	private $id;
-	private $role_id;
-	private $user_id;
-
+	private $name;
+	private $module;
+	private $description;
 	private $created_at;
 	private $updated_at;
 	private $created_by;
@@ -18,25 +18,20 @@ class RoleUser extends Model {
 	public function initialize() {
         $this->skipAttributes(array('id','created_at','updated_at','created_by','updated_by'));
 
-        $this->belongsTo(
-        	"user_id",
-        	"User",
-        	"id"
+        $this->hasMany(
+            "id",
+            "RolePermission",
+            "permission_id"
         );
-
-        $this->belongsTo(
-        	"role_id",
-        	"Role",
-        	"id"
-        );
-
     }
 
 	public function getId() { return $this->id; }
-	public function setRoleId($role_id) { $this->role_id = $role_id; }
-	public function getRoleId() { return $this->role_id; }
-	public function setUserId($user_id) { $this->user_id = $user_id; }
-	public function getUserId() { return $this->user_id; }
+	public function setName($name) { $this->name = $name; }
+	public function getName() { return $this->name; }
+	public function setModule($module) { $this->module = $module; }
+	public function getModule() { return $this->module; }
+	public function setDescription($description) { $this->description = $description; }
+	public function getDescription() { return $this->description; }
 
 	public function getCreatedAt() { return $this->created_at; }
     public function getUpdatedAt() { return $this->updated_at; }
