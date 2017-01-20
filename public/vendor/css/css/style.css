@@ -78,7 +78,7 @@ footer {
   text-align: right !important;
 }
 
-.divloader {
+div #divloader {
   display: none;
   text-align: center;
   padding: 20px;
@@ -86,8 +86,8 @@ footer {
 
 div .loader {
   position: absolute;
-  left: 80%;
-  top: 70%;
+  left: 50%;
+  top: 110%;
   z-index: 1;
   border: 16px solid #cccccc;
   border-radius: 50%;

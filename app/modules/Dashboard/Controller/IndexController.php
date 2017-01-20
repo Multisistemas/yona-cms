@@ -15,14 +15,7 @@ class IndexController extends Controller
 {
 
     public function indexAction($system = null) {
-        if ($this->session->has('manual')) {
-        	$manual = $this->session->get('manual');
-        	$this->view->auth = $manual;
-        } else if ($this->session->has('opauth')) {
-        	$opauth = $this->session->get('opauth');
-        	$this->view->auth = $opauth;
-        } 
-
+        
         if ($system != null) {
         	$systemUser = $system->getShortname();
         	$this->view->system = $systemUser;
@@ -37,11 +30,11 @@ class IndexController extends Controller
         $this->view->registerform = $registerform;
     }
 
-    public function showAction(){
+    public function showAction($user){
 
-    	$user = $this->session->get('manual');
+    	$user = User::findFirstByEmail($user->getEmail());
     	
-    	$companyUser = CompanyUser::findFirstByUserId($user->id);
+    	$companyUser = CompanyUser::findFirstByUserId($user->getId());
 
     	$companySys = CompanySystem::findFirstByCompanyId($companyUser->getCompanyId());
     	

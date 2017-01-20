@@ -23,7 +23,6 @@ class LoginController extends Controller
     }
 
     public function loginOpauthAction() {
-
         $this->session->set('opauth', $this->login());
         $this->view->disable();
     }
@@ -31,31 +30,40 @@ class LoginController extends Controller
     public function loginManualAction(){
 
         if ($this->request->isPost()) {
-            $email = $this->request->getPost('email');
-            $password = $this->request->getPost('password');
-            $user = User::findFirstByEmail($email);
-            if ($user) {
-                if ($user->checkPassword($password)) {
-                    if ($user->isActive()) { 
-                        $this->session->set('manual', $user->getAuthData());
-                        $this->dispatcher->forward(            
-                            [
-                                "controller"    => "index",
-                                "action"        => "show",        
-                            ]
-                        );
+            if ($this->security->checkToken()) {
+
+                $email = $this->request->getPost('email');
+                $password = $this->request->getPost('password');
+                $user = User::findFirstByEmail($email);
+                if ($user) {
+                    if ($user->checkPassword($password)) {
+                        if ($user->isActive()) { 
+                            $this->session->set('manual', $user->getAuthData());
+                            $this->dispatcher->forward(            
+                                [
+                                    "controller"    => "index",
+                                    "action"        => "show",
+                                    "params"        => [$user],        
+                                ]
+                            );
+                        } else {
+                            $this->redirect($this->url->get() . 'dashboard/index/login');
+                            $this->flash->error($this->helper->translate("El usuario ingresado se encuentra desactivado"));
+                        }
                     } else {
                         $this->redirect($this->url->get() . 'dashboard/index/login');
-                        $this->flash->error($this->helper->translate("El usuario no se encuentra activo"));
+                        $this->flash->error($this->helper->translate("La contraseña ingresada es incorrecta"));
                     }
                 } else {
                     $this->redirect($this->url->get() . 'dashboard/index/login');
-                    $this->flash->error($this->helper->translate("Contraseña incorrecta"));
+                    $this->flash->error($this->helper->translate("El usuario ingresado no existe"));
                 }
+
             } else {
                 $this->redirect($this->url->get() . 'dashboard/index/login');
-                $this->flash->error($this->helper->translate("Correo o contraseña incorrectos"));
+                $this->flash->error($this->helper->translate("Error de seguridad: Solicitud rechazada"));
             }
+
         }
     }
 
@@ -102,19 +110,19 @@ class LoginController extends Controller
 
     public function successAction() {
         $this->view->disable();
+
         $auth = $this->session->get('opauth');
 
         $email = $auth["auth"]["raw"]["email"];
-        $verified = $auth["auth"]["raw"]["email"];
+        $verified = $auth["auth"]["raw"]["verified_email"];
         
         $this->dispatcher->forward( 
             [
                 'controller'    => 'register',
                 'action'        => 'search',
-                'params'        => [$email, $verified];
+                'params'        => [$email, $verified]
             ]
         );
-        //$response->redirect("index/index")->auths = $auths;
     }
 
     public function destroyAction()

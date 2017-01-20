@@ -14,6 +14,7 @@ class User extends Model {
 	private $active;
 	private $suspended;
 	private $deleted;
+    private $verified;
     private $session_type;
 	private $created_at;
 	private $updated_at;
@@ -74,6 +75,8 @@ class User extends Model {
     public function isActive() {
         if ($this->active) {
             return true;
+        } else {
+            return false;
         }
     }
 
@@ -93,6 +96,14 @@ class User extends Model {
         }
     }
 
+    public function isSuspended() {
+        if ($this->suspended) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public function setActive($active) { $this->active = $active; }
 
     public function getActive() { return $this->active; }
@@ -104,6 +115,10 @@ class User extends Model {
     public function setDeleted($deleted) { $this->deleted = $deleted; }
 
     public function getDeleted() { return $this->deleted; }
+
+    public function setVerified($verified) { $this->verified = $verified; }
+
+    public function getVerified() { return $this->verified; }
 
     public function setSessionType($session_type) { $this->session_type = $session_type; }
 

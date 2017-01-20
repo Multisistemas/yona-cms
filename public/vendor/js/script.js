@@ -1,20 +1,19 @@
-$(document).ready(function(){
-	$("#rgform").submit(function(event){
-	  	$(".divloader").css("display", "block");
-		$("#mailbtn").attr("disabled","true");
-	});
+function showPanel(){
+    var panelRegister = document.getElementById("panel-register");
+    var questionDiv = document.getElementById("question-div");
 
-    $("#inviteform").submit(function(event){
-        $(".divloader").css("display", "block");
-        $("#invitebtn").attr("disabled","true");
-    });
+    questionDiv.style.display = "none";
+    panelRegister.style.display = "block";
 
-    $("#question-div").on("click", function(){
-    	$("#panel-login").fadeOut("slow");
-    	$("#question-div").fadeOut("slow");
-    	$("#panel-register").fadeIn("slow");
-    });  
-});
+}
+
+function showLoader(){
+    var loader = document.getElementById("divloader");
+    var mailbtn = document.getElementById("mailbtn");
+
+    loader.style.display = "block";
+    mailbtn.disabled = "true";
+}
 
 function validatePass(){
     var p1 = document.getElementById("pass").value;
