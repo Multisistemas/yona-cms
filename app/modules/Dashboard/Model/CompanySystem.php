@@ -26,8 +26,9 @@ class CompanySystem extends Model {
 
         $this->belongsTo(
         	"system_id",
-        	"System",
-        	"id"
+        	"Dashboard\\Model\\System",
+        	"id",
+            ['alias'=>'system']
         );
     }
 

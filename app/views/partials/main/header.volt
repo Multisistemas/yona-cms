@@ -12,7 +12,7 @@
           <li><a href="/dashboard/login/logout"><i class="fa fa-sign-out"></i> Cerrar sesión</a></li>
         {% elseif session.has('opauth') %}
           {% set opauth = session.get('opauth') %}
-          <li><a class="dropdown-toggle profile-image"><img src="{{ opauth['auth']['raw']['picture'] }}" class="img-circle special-img">{{ auth.name }}</a></li>
+          <li><a class="dropdown-toggle profile-image"><img src="{{ opauth['auth']['raw']['picture'] }}" class="img-circle special-img">{{ opauth['auth']['raw']['name'] }}</a></li>
           <li><a href="/dashboard/login/logout"><i class="fa fa-sign-out"></i> Cerrar sesión</a></li>
         {% endif %}
       {% else %}

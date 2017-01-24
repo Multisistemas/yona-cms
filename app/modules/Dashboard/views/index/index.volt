@@ -24,7 +24,7 @@
                     <div class="jumbotron">
                         <h2>{{ auth.name }}</h2>
                         {% if system != null %}
-                        <p>Estos son los sistemas que ha elegido:</p>
+                        <p>Estos son los sistemas disponibles en su empresa:</p>
                             {% if system == "ERP" %}
                                 <a href="#"><button type="button" class="btn btn-lg btn-primary">Ir a ERP</button></a>
                             {% elseif system == "DMS" %}
@@ -34,21 +34,22 @@
                             {% endif %}
                         {% endif %}
                     </div>
-                    {% if session.has('opauth') %}
+                    {% elseif session.has('opauth') %}
                     {% set opauth = session.get('opauth') %}
                     <div class="jumbotron">
                         <h2>{{ opauth['auth']['raw']['name'] }}</h2>
-                            {% if system != null %}
-                            <p>Estos son los sistemas que ha elegido:</p>
-                                {% if system == "ERP" %}
-                                    <a href="#"><button type="button" class="btn btn-lg btn-primary">Ir a ERP</button></a>
-                                {% elseif system == "DMS" %}
-                                    <a href="#"><button type="button" class="btn btn-lg btn-warning">Ir a DMS</button></a>
-                                {% elseif system == "LMS" %}
-                                    <a href="#"><button type="button" class="btn btn-lg btn-info">Ir a LMS</button></a>
-                                {% endif %}
+                        {% if system != null %}
+                        <p>Estos son los sistemas disponibles en su empresa:</p>
+                            {% if system == "ERP" %}
+                                <a href="#"><button type="button" class="btn btn-lg btn-primary">Ir a ERP</button></a>
+                            {% elseif system == "DMS" %}
+                                <a href="#"><button type="button" class="btn btn-lg btn-warning">Ir a DMS</button></a>
+                            {% elseif system == "LMS" %}
+                                <a href="#"><button type="button" class="btn btn-lg btn-info">Ir a LMS</button></a>
                             {% endif %}
+                        {% endif %}
                     </div>
+                    {% endif %}
                 </div>   
                 {% else %}
                 <div class="col-md-12">

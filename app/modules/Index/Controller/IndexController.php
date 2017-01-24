@@ -32,11 +32,7 @@ class IndexController extends Controller
 
         $this->view->text = $pageResult->text;
 
-        if ($this->session->has('manual')) {
-            $this->view->auth = $this->session->get('manual');
-        } else if ($this->session->has('opauth')) {
-            $this->view->auth = $this->session->get('opauth');
-        }
+       
     }
 
     public function loginAction()

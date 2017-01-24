@@ -7,7 +7,6 @@
                     <img src="/static/images/mseilogo.png" alt="Multisistemas Logo">
                 </a>
             </div>
-
             {% if session.has('opauth') %}
                 {% set opauth = session.get('opauth') %}
                     <div class="jumbotron">

@@ -3,6 +3,7 @@
 namespace Dashboard\Model;
 
 use Phalcon\Mvc\Model;
+use Dashboard\Model\RoleUser;
 use stdClass;
 
 class User extends Model {
@@ -82,10 +83,13 @@ class User extends Model {
 
     public function getAuthData() {
         $authData = new stdClass();
+        $role = RoleUser::findFirstByUserId($this->getId());
+
         $authData->id = $this->getId();
         $authData->session_type = $this->getSessionType();
         $authData->name = $this->getName();
         $authData->email = $this->getEmail();
+        $authData->roleId = $role->getRoleId();
         
         return $authData;
     }

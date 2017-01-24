@@ -18,10 +18,6 @@ class LoginController extends Controller
     	$this->view->pick('index/index');
     }
 
-    public function showAction() {
-         //var_dump($this->session->has('opauth'));
-    }
-
     public function loginOpauthAction() {
         $this->session->set('opauth', $this->login());
         $this->view->disable();
@@ -79,15 +75,20 @@ class LoginController extends Controller
         $opauth->run();
     }
 
-    public function logoutAction()
-    {   
-        if ($this->session->has('opauth')) {
-            $this->session->remove('opauth');
-        } else if ($this->session->has('manual')) {
-            $this->session->remove('manual');
-        }
+    public function logoutAction() {   
 
-        $this->indexAction();
+        if ($this->session->has('opauth')) {
+            
+            $this->session->remove('opauth');
+            $this->indexAction();
+
+        } else if ($this->session->has('manual')) {
+
+            $this->session->remove('manual');
+            $this->indexAction();
+            
+        }
+        
     }
 
     /**
@@ -109,7 +110,6 @@ class LoginController extends Controller
     }
 
     public function successAction() {
-        $this->view->disable();
 
         $auth = $this->session->get('opauth');
 
