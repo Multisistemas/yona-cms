@@ -18,42 +18,47 @@ class LoginController extends Controller
     	$this->view->pick('index/index');
     }
 
-    public function showAction() {
-         //var_dump($this->session->has('opauth'));
-    }
-
     public function loginOpauthAction() {
-
         $this->session->set('opauth', $this->login());
         $this->view->disable();
     }
 
     public function loginManualAction(){
-        if ($this->request->isPost()) {
 
-                    $email = $this->request->getPost('email');
-                    $password = $this->request->getPost('password');
-                    $user = User::findFirstByEmail($email);
-                    if ($user) {
-                        if ($user->checkPassword($password)) {
-                            if ($user->isActive()) { 
-                                $this->session->set('manual', $user->getAuthData());
-                                $this->dispatcher->forward(
-                                    [
-                                        "controller"    => "index",
-                                        "action"        => "show",
-                                    ]
-                                );
-                            } else {
-                                $this->flash->error($this->helper->translate("User is not activated yet"));
-                            }
+        if ($this->request->isPost()) {
+            if ($this->security->checkToken()) {
+
+                $email = $this->request->getPost('email');
+                $password = $this->request->getPost('password');
+                $user = User::findFirstByEmail($email);
+                if ($user) {
+                    if ($user->checkPassword($password)) {
+                        if ($user->isActive()) { 
+                            $this->session->set('manual', $user->getAuthData());
+                            $this->dispatcher->forward(            
+                                [
+                                    "controller"    => "index",
+                                    "action"        => "show",
+                                    "params"        => [$user],        
+                                ]
+                            );
                         } else {
-                            $this->flash->error($this->helper->translate("Incorrect login or password"));
+                            $this->redirect($this->url->get() . 'dashboard/index/login');
+                            $this->flash->error($this->helper->translate("El usuario ingresado se encuentra desactivado"));
                         }
                     } else {
-                        $this->flash->error($this->helper->translate("Incorrect login or password"));
+                        $this->redirect($this->url->get() . 'dashboard/index/login');
+                        $this->flash->error($this->helper->translate("La contraseña ingresada es incorrecta"));
                     }
-              
+                } else {
+                    $this->redirect($this->url->get() . 'dashboard/index/login');
+                    $this->flash->error($this->helper->translate("El usuario ingresado no existe"));
+                }
+
+            } else {
+                $this->redirect($this->url->get() . 'dashboard/index/login');
+                $this->flash->error($this->helper->translate("Error de seguridad: Solicitud rechazada"));
+            }
 
         }
     }
@@ -70,15 +75,20 @@ class LoginController extends Controller
         $opauth->run();
     }
 
-    public function logoutAction()
-    {   
-        if ($this->session->has('opauth')) {
-            $this->session->remove('opauth');
-        } else if ($this->session->has('manual')) {
-            $this->session->remove('manual');
-        }
+    public function logoutAction() {   
 
-        $this->indexAction();
+        if ($this->session->has('opauth')) {
+            
+            $this->session->remove('opauth');
+            $this->indexAction();
+
+        } else if ($this->session->has('manual')) {
+
+            $this->session->remove('manual');
+            $this->indexAction();
+            
+        }
+        
     }
 
     /**
@@ -97,6 +107,22 @@ class LoginController extends Controller
             $object = get_object_vars( $object );
         }
         return array_map(array($this,"objectToArray"), $object );
+    }
+
+    public function successAction() {
+
+        $auth = $this->session->get('opauth');
+
+        $email = $auth["auth"]["raw"]["email"];
+        $verified = $auth["auth"]["raw"]["verified_email"];
+        
+        $this->dispatcher->forward( 
+            [
+                'controller'    => 'register',
+                'action'        => 'search',
+                'params'        => [$email, $verified]
+            ]
+        );
     }
 
     public function destroyAction()

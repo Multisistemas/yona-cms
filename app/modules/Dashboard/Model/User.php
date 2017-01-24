@@ -3,6 +3,7 @@
 namespace Dashboard\Model;
 
 use Phalcon\Mvc\Model;
+use Dashboard\Model\RoleUser;
 use stdClass;
 
 class User extends Model {
@@ -14,6 +15,7 @@ class User extends Model {
 	private $active;
 	private $suspended;
 	private $deleted;
+    private $verified;
     private $session_type;
 	private $created_at;
 	private $updated_at;
@@ -22,6 +24,35 @@ class User extends Model {
 
 	public function initialize() {
         $this->skipAttributes(array('id','created_at','updated_at','created_by','updated_by'));
+
+        $this->hasMany(
+            "id",
+            "UserToken",
+            "user_id"
+        );
+
+        $this->hasMany(
+            "id",
+            "Dashboard\\Model\\CompanyUser",
+            "user_id",
+            ['alias'=>'companyUser']
+        );
+
+        $this->hasMany(
+            "id",
+            "Dashboard\\Model\\RoleUser",
+            "user_id",
+            ['alias'=>'roleUser']
+        );
+
+        $this->hasManyToMany(
+            "id",
+            "dashboard\\Model\\CompanyUser",
+            "user_id", "company_id",
+            "Dashboard\\Model\\Company",
+            "id"
+        );
+
     }
 
     public function getId() { return $this->id; }
@@ -45,15 +76,20 @@ class User extends Model {
     public function isActive() {
         if ($this->active) {
             return true;
+        } else {
+            return false;
         }
     }
 
     public function getAuthData() {
         $authData = new stdClass();
+        $role = RoleUser::findFirstByUserId($this->getId());
+
         $authData->id = $this->getId();
         $authData->session_type = $this->getSessionType();
         $authData->name = $this->getName();
         $authData->email = $this->getEmail();
+        $authData->roleId = $role->getRoleId();
         
         return $authData;
     }
@@ -61,6 +97,14 @@ class User extends Model {
     public function checkPassword($password) {
         if (password_verify($password, $this->pass)) {
             return true;
+        }
+    }
+
+    public function isSuspended() {
+        if ($this->suspended) {
+            return true;
+        } else {
+            return false;
         }
     }
 
@@ -75,6 +119,10 @@ class User extends Model {
     public function setDeleted($deleted) { $this->deleted = $deleted; }
 
     public function getDeleted() { return $this->deleted; }
+
+    public function setVerified($verified) { $this->verified = $verified; }
+
+    public function getVerified() { return $this->verified; }
 
     public function setSessionType($session_type) { $this->session_type = $session_type; }
 

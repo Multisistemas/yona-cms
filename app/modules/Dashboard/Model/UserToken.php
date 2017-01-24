@@ -9,11 +9,18 @@ class UserToken extends Model {
 	private $id;
 	private $user_id;
 	private $token;
+	private $expired;
 	private $created_at;
 	private $updated_at;
 
 	public function initialize() {
         $this->skipAttributes(array('id','created_at','updated_at'));
+
+        $this->belongsTo(
+        	"user_id",
+        	"User",
+        	"id"
+        );
     }
 
 	public function getId() { return $this->id; }
@@ -21,6 +28,14 @@ class UserToken extends Model {
 	public function getUserId() { return $this->user_id; }
 	public function setToken($token) { $this->token = $token; }
 	public function getToken() { return $this->token; }
+	public function setExpired($expired) { $this->expired = $expired; }
+	public function getExpired() { return $this->expired; }
+
+	public function isExpired(){
+		if ($this->expired) {
+			return true;
+		}
+	}
 
 	public function getCreatedAt() { return $this->created_at; }
     public function getUpdatedAt() { return $this->updated_at; }

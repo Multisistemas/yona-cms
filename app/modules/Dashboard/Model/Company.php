@@ -15,6 +15,20 @@ class Company extends Model {
 
 	public function initialize() {
         $this->skipAttributes(array('id','created_at','updated_at','created_by','updated_by'));
+
+        $this->hasMany(
+            "id",
+            "Dashdoard\\Model\\CompanyUser",
+            "company_id",
+            ["alias" => "companyUser"]
+        );
+
+        $this->hasMany(
+            "id",
+            "Dashdoard\\Model\\CompanySystem",
+            "company_id",
+            ["alias" => "companySystem"]
+        );
     }
 
 	public function getId() { return $this->id; }

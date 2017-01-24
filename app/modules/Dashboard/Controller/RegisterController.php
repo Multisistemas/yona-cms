@@ -11,6 +11,7 @@ use Dashboard\Model\UserToken;
 use Dashboard\Model\Company;
 use Dashboard\Model\CompanySystem;
 use Dashboard\Model\CompanyUser;
+use Dashboard\Model\System;
 use Dashboard\Model\RoleUser;
 use Phalcon\Http\Response;
 
@@ -27,46 +28,121 @@ class RegisterController extends Controller
         $this->view->success = $success;
     }
 
-    public function search() {
+    public function searchAction($email, $verified = null) {
 
+        if ($verified != null) {
+            $user = User::findFirstByEmail($email);
+            if ($user) {
+                if($user->getVerified() == $verified){
+                    $this->dispatcher->forward(
+                        [
+                            'controller'    => 'index',
+                            'action'        => 'show',
+                            'params'        => [$user],
+                        ]
+                    );
+                } 
+            } else {
+                $user = $this->saveOpauthData();
+
+                if ($user) {
+                    $opauth = true;
+                    $id = $user->getId();
+                    $email = $user->getEmail();
+                    $this->dispatcher->forward(
+                        [
+                            'controller'    => 'register',
+                            'action'        => 'nextstep',
+                            'params'        => [$id, $email, $opauth],    
+                        ]
+                    );
+                }
+            }
+
+        } else {
+            $user = User::findFirstByEmail($email);
+            if ($user) {
+                return $user;
+            } else {
+                return false;
+            }
+        }
     }
 
-    public function inviteAction($user) {
+    public function inviteAction($id = null) {
         $inviteForm = new InviteForm();
-        $this->view->inviteForm = $inviteForm;
         
-        $this->setSession($user);
+        if ($id != null) {
+            $this->view->setVars(
+                [
+                    "id" => $id,
+                    "inviteForm" => $inviteForm,
+                ]
+            );
+        } else {
+            if ($this->session->has('opauth')) {
+                $session = $this->session->get('opauth');
+                $user = User::findFirstByEmail($session['auth']['raw']['email']);
+
+                $id = $user->getId();
+
+                $this->view->setVars(
+                    [
+                        "id" => $id,
+                        "inviteForm" => $inviteForm,
+                    ]
+                );
+            } else if ($this->session->has('manual')) {
+                $session = $this->session->get('manual');
+                $user = User::findFirstByEmail($session->email);
+
+                $id = $user->getId();
+
+                $this->view->setVars(
+                    [
+                        "id" => $id,
+                        "inviteForm" => $inviteForm,
+                    ]
+                );
+            }
+        }
+        
     }
 
-    public function setSession($user) {
+    public function setSessionManual($user) {
         $this->session->set('manual', $user->getAuthData());
     }
 
-    public function sendInvitationsAction($bool){
+    public function sendInvitationsAction($id) {
         $post = $this->request->getPost();
-        if ($post["email1"] != null) {
-            $email = $post["email1"];
-            $this->sendMailAction($email, $bool);
+
+        foreach ($post as $key => $email) {
+            if ($email != null || $email != '') {
+                $exists = $this->validateIfExistsAction($email, $id);
+                if ($exists) {
+                    $this->redirect($this->url->get() . 'dashboard/register/invite');
+                    $this->flash->warning($this->helper->translate("No se envió la invitación. Ya existe un usuario con el correo: ".$email));
+                }
+            }
         }
 
-        if ($post["email2"] != null) {
-            $email = $post["email2"];
-            $this->sendMailAction($email, $bool);
-        }
-
-        if ($post["email3"] != null) {
-            $email = $post["email3"];
-            $this->sendMailAction($email, $bool);
-        }
-
-        return $this->redirect($this->url->get() . 'index');
-
-        /*$this->dispatcher->forward(
+        $this->dispatcher->forward(
             [
-                "controller" => "index",
-                "action" => "index",
+                "controller"    => "index",
+                "action"        => "show",
             ]
-        );*/
+        );
+
+    }
+
+    public function validateIfExistsAction($email, $id) {
+        $user = User::findFirstByEmail($email);
+        if ( $user != null && $user->getActive() == 1 ) {
+            return true;
+        } else {
+            $this->sendMailAction($email, $id);
+            return false;
+        }
     }
 
     public function newAction($email)
@@ -80,6 +156,7 @@ class RegisterController extends Controller
         $user->setActive(0);
         $user->setSuspended(0);
         $user->setDeleted(0);
+        $user->setVerified(0);
 
         if ($user->save()) {
             return $email;
@@ -90,8 +167,64 @@ class RegisterController extends Controller
         $this->view->disable();
     }
 
-    public function updateAction() {
+    public function saveOpauthData(){
+        $opauth = $this->session->get('opauth');
 
+        $user = new User();
+        
+        $user->setName($opauth["auth"]["raw"]["name"]);
+        $user->setEmail($opauth["auth"]["raw"]["email"]);
+        $user->setPass(null);
+        $user->setActive(1);
+        $user->setSuspended(0);
+        $user->setDeleted(0);
+        $user->setVerified($opauth["auth"]["raw"]["verified_email"]);
+        $user->setSessionType('opauth');
+
+        if ($user->save()) {
+            return $user;
+        } else {
+            $this->redirect($this->url->get() . 'dashboard/index/login');
+            $this->flash->error($this->helper->translate("Ha ocurrido un error al guardar el usuario, por favor inténtelo de nuevo"));
+        }
+
+    }
+
+    public function updateOpauthAction(){
+        $post = $this->request->getPost();
+        $user = User::findFirstById($post["id"]);
+
+        $company = new Company();
+        $company->setName($post["company"]);
+
+        if ($company->save()) {
+
+            $this->saveCompanyUser($company, $user);
+            $this->saveRoleUser($user);
+            $this->saveCompanySystem($company->getId(), $post["system"]);
+
+            $user->setPass($post["password"]);
+            $user->setSessionType("opauth");
+
+            try {
+
+                if($user->save()) {
+                    $id = $user->getId();
+                    $this->dispatcher->forward(
+                        [
+                            "controller"    => "register",
+                            "action"        => "invite",
+                            "params"        => [$id],
+                        ]
+                    );
+                }
+            } catch (Exception $e) {
+                echo 'Ha ocurrido un error: ',  $e->getMessage(), "\n";
+            } 
+        }
+    }
+
+    public function updateAction() {
         $post = $this->request->getPost();
         $user = User::findFirstById($post["id"]);
 
@@ -111,19 +244,23 @@ class RegisterController extends Controller
                 $user->setPass($post["password"]);
                 $user->setActive(1);
                 $user->setSessionType("manual");
+                $user->setVerified(1);
 
                 try {
 
-                    if($user->save());
+                    if($user->save()) {
+                        $id = $user->getId();
+                        $this->setSessionManual($user);
                         $this->dispatcher->forward(
                             [
                                 "controller"    => "register",
                                 "action"        => "invite",
-                                "params"        => [$user],
+                                "params"        => [$id],
                             ]
                         );
+                    }
 
-                    } catch (Exception $e) {
+                } catch (Exception $e) {
                         echo 'Ha ocurrido un error: ',  $e->getMessage(), "\n";
                 } 
             }
@@ -132,6 +269,38 @@ class RegisterController extends Controller
             echo 'Ha ocurrido un error: ',  $e->getMessage(), "\n";
         }
         
+    }
+
+    public function updateGuestAction() {
+
+        $post = $this->request->getPost();
+        $user = User::findFirstById($post["id"]);
+        
+        $company = Company::findFirstByName($post["company"]);
+        $this->saveCompanyUser($company, $user);
+        $this->saveRoleUser($user, true);
+
+        $user->setName($post["name"]);
+        $user->setPass($post["password"]);
+        $user->setActive(1);
+        $user->setSessionType("manual");
+        $user->setVerified(1);
+
+        try {
+
+            if($user->save());
+                $this->session->set('manual', $user->getAuthData());
+                $this->dispatcher->forward(            
+                    [
+                        "controller"    => "index",
+                        "action"        => "show",
+                        "params"        => [$user],        
+                    ]
+                );
+
+        } catch (Exception $e) {
+            echo 'Ha ocurrido un error: ',  $e->getMessage(), "\n";
+        } 
     }
 
     public function saveCompanyUser($company, $user) {
@@ -143,11 +312,16 @@ class RegisterController extends Controller
         $company_user->save();
     }
 
-    public function saveRoleUser($user) {
+    public function saveRoleUser($user, $guest = false) {
         $role_user = new RoleUser();
 
-        $role_user->setRoleId(1);
-        $role_user->setUserId($user->getId());
+        if ($guest) {
+            $role_user->setRoleId(2);
+            $role_user->setUserId($user->getId());
+        } else {
+            $role_user->setRoleId(1);
+            $role_user->setUserId($user->getId());
+        }
 
         $role_user->save();
     }
@@ -161,53 +335,86 @@ class RegisterController extends Controller
         $companySys->save();
     }
 
-    public function sendMailAction($data = null, $bool = null) {
-        if ($data != null) {
-            $email = $data;
+    public function sendMailAction($mail = null, $id = null) {
+        if ($mail != null) {
+            $email = $mail;
         } else {
             $email = $this->request->getPost("rmail");    
         }
         
-        $saved_email = $this->newAction($email);
+        if ($id != null) {
+            
+            $saved_email = $this->newAction($email);
+            $user = User::findFirstByEmail($saved_email);
+            $this->swiftSend($this->generateToken($user), $saved_email, $id);
 
-        if ($saved_email == false) {
-            $this->flash->error('Ha ocurrido un error al almacenar el correo');
-        } else { 
+        } else {
 
-            $row = User::findFirstByEmail($saved_email);
+            if($user = $this->searchAction($email)) {
+                if ($user->isActive()) {
+                    $this->redirect($this->url->get() . 'dashboard/index/login');
+                    $this->flash->error('Este usuario ya existe y actualmente se encuentra activado');
+                } else if ($user->isActive() == false && $user->isSuspended() == true) {
+                    $this->redirect($this->url->get() . 'dashboard/index/login');
+                    $this->flash->error('Este usuario ya existe y actualmente se encuentra desactivado');
+                } else if ($user->isActive() == false && $user->isSuspended() == false) {
+                    $result = $this->swiftSend($this->generateToken($user), $saved_email);
+                    if ($result) {
+                        $this->redirect($this->url->get() . 'dashboard/index/login');
+                        $this->flash->success($this->helper->translate("Correo enviado exitosamente! Por favor revise su bandeja de entrada"));
+                    } else {
+                        $this->redirect($this->url->get() . 'dashboard/index/login');
+                        $this->flash->warning($this->helper->translate("Ha ocurrido un error durante el envio, inténtelo de nuevo"));
+                    }
+                }
 
-            if ($row != null || $row != false) {
+            } else {
 
-                $token = bin2hex(openssl_random_pseudo_bytes(16));
-                $user_token = new UserToken;
+                $saved_email = $this->newAction($email);
 
-                $user_token->setUserId($row->getId());
-                $user_token->setToken($token);
-
-                try {
+                if ($saved_email == false) {
+                    $this->flash->error('Ha ocurrido un error al almacenar el correo');
                 
-                    if ($user_token->save()) {
-                       $result = $this->swiftSend($token, $saved_email);
-                       if ($bool == null) {
-                           $this->dispatcher->forward(
-                                [
-                                    "controller" => "register",
-                                    "action" => "sent",
-                                    "params" => [1]
-                                ]
-                            );
+                } else { 
+
+                    $user = User::findFirstByEmail($saved_email);
+
+                    if ($user != null) {
+     
+                        $result = $this->swiftSend($this->generateToken($user), $saved_email);
+
+                        if ($result) {
+
+                            $this->redirect($this->url->get() . 'dashboard/index/login');
+                            $this->flash->success($this->helper->translate("Correo enviado exitosamente! Por favor revise su bandeja de entrada"));
+
+                        } else {
+
+                            $this->redirect($this->url->get() . 'dashboard/index/login');
+                            $this->flash->warning($this->helper->translate("Ha ocurrido un inconveniente durante el envio, inténtelo de nuevo"));
+
                         }
                     }
-
-                } catch (Exception $e) {
-                  echo 'Ha ocurrido un error: ',  $e->getMessage(), "\n";
                 }
             }
-        }
+        }   
     }
 
-    private function swiftSend($token = NULL, $saved_email) {
+    public function generateToken($user) {
+        $token = bin2hex(openssl_random_pseudo_bytes(16));
+        $user_token = new UserToken;
+
+        $user_token->setUserId($user->getId());
+        $user_token->setToken($token);
+        $user_token->setExpired(0);
+        $user_token->save();
+
+        return $token;
+    }
+
+    private function swiftSend($token, $saved_email, $id = null) {
         $parameters = $this->objectToArray($this->config->swift);
+        $user = User::findFirstByEmail($saved_email);
 
         $transport = \Swift_SmtpTransport::newInstance($parameters['server'], $parameters['port'])
             ->setUsername($parameters['username'])
@@ -215,18 +422,29 @@ class RegisterController extends Controller
 
         $mailer = \Swift_Mailer::newInstance($transport);
 
-        $message = \Swift_Message::newInstance('Confirmación de cuenta')
-          ->setFrom(array($parameters['username'] => 'Multisistemas Team'))
-          ->setTo(array($saved_email))
-          ->addPart('<h1>Mensaje enviado desde Multisistemas Dashboard</h1>
-               <p>Email: '.$saved_email.'</p>
-               <p>Mensaje: Haga click en el siguiente enlace para verificar su correo:</p>'.
-                '<p>http://'.$_SERVER['HTTP_HOST'].'/dashboard/register/validate/'.$token
-                .'</p>', 'text/html');
+        if ($id != null) {
+            $message = \Swift_Message::newInstance('Confirmación de cuenta')
+              ->setFrom(array($parameters['username'] => 'Multisistemas Team'))
+              ->setTo(array($saved_email))
+              ->addPart('<h1>Mensaje enviado desde Multisistemas Dashboard</h1>
+                   <p>Email: '.$saved_email.'</p>
+                   <p>Mensaje: Haga click en el siguiente enlace para verificar su correo:</p>'.
+                    '<p>http://'.$_SERVER['HTTP_HOST'].'/dashboard/register/validate/'.$token
+                    .'/'.$id.'</p>', 'text/html');
+        } else {
+            $message = \Swift_Message::newInstance('Confirmación de cuenta')
+              ->setFrom(array($parameters['username'] => 'Multisistemas Team'))
+              ->setTo(array($saved_email))
+              ->addPart('<h1>Mensaje enviado desde Multisistemas Dashboard</h1>
+                   <p>Email: '.$saved_email.'</p>
+                   <p>Mensaje: Haga click en el siguiente enlace para verificar su correo:</p>'.
+                    '<p>http://'.$_SERVER['HTTP_HOST'].'/dashboard/register/validate/'.$token
+                    .'</p>', 'text/html');
+        }
 
         try {
             
-            if ($result = $mailer->send($message)) {
+            if ($mailer->send($message)) {
                 return true;
             }
 
@@ -248,28 +466,62 @@ class RegisterController extends Controller
         return array_map(array($this,"objectToArray"), $object );
     }
 
-    public function validateAction($token) {
+    public function validateAction($token, $id = null) {
         $user_token = UserToken::findFirstByToken($token);
 
-        if ($user_token != false) {
-            $user = User::findFirstById($user_token->getUserId());
+        if ($id != null) {
 
-            $id = $user->getId();
-            $email = $user->getEmail();
-            $this->dispatcher->forward(
-                [
-                    'controller'    => 'register',
-                    'action'        => 'nextstep',
-                    'params'        => [$id, $email],    
-                ]
-            );
+            if ($user_token != false && $user_token->getExpired() == 0) {
+                $user_token->setExpired(1);
+                $user_token->save();
+
+                $user = User::findFirstById($user_token->getUserId());
+
+                $userId = $user->getId();
+                $email = $user->getEmail();
+                $opauth = null;
+
+                $this->dispatcher->forward(
+                        [
+                            'controller'    => 'register',
+                            'action'        => 'nextstep',
+                            'params'        => [$userId, $email, $opauth, $id],    
+                        ]
+                    );
+            } else {
+                $this->dispatcher->forward(
+                    [
+                        'controller'    => 'register',
+                        'action'        => 'invalid'    
+                    ]
+                );
+            }
+
         } else {
-            $this->dispatcher->forward(
-                [
-                    'controller'    => 'register',
-                    'action'        => 'invalid'    
-                ]
-            );
+
+            if ($user_token != false && $user_token->getExpired() == 0) {
+                $user_token->setExpired(1);
+                $user_token->save();
+
+                $user = User::findFirstById($user_token->getUserId());
+
+                $id = $user->getId();
+                $email = $user->getEmail();
+                $this->dispatcher->forward(
+                    [
+                        'controller'    => 'register',
+                        'action'        => 'nextstep',
+                        'params'        => [$id, $email],    
+                    ]
+                );
+            } else {
+                $this->dispatcher->forward(
+                    [
+                        'controller'    => 'register',
+                        'action'        => 'invalid'    
+                    ]
+                );
+            }
         }
 
     }
@@ -278,39 +530,64 @@ class RegisterController extends Controller
 
     }
 
-    public function nextstepAction($id, $email){
-        $registerform = new RegisterForm;
+    public function nextstepAction($id, $email, $opauth = null, $userId = null){
+        $registerform = new RegisterForm();
+        $company = null;
+
+        if ($userId != null) {
+            $user = User::findFirstById($userId);
+            foreach ($user->companyUser as $userCom) {
+                $theCompany = $userCom->company->name;
+            }
+
+            $company = $theCompany;
+        }
+        
+
         $this->view->setVars(
             [
                 "id"            => $id,
                 "email"         => $email,
                 "registerform"  => $registerform,
+                "opauthId"      => $opauth,
+                "userId"        => $userId,
+                "company"       => $company,
             ]
         );
+
     }
 
-    public function showAction($send = null) {
+    public function showAction() {
         
-        var_dump($companyFind = User::findFirstByEmail("lmedrano@multisistemas.com.sv"));
-        /*
-        if ($send == 1) {
-            $this->dispatcher->forward(
-            [
-                "controller" => "register",
-                "action" => "nextstep",
-                "params" => [1, 'felmedranop@gmail.com']
-            ]
-        );
-        } else {
-            $this->dispatcher->forward(
-            [
-                "controller" => "index",
-                "action" => "index"
-            ]
-        );
-        }
-        
+        //var_dump($this->session->get('opauth'));
 
-        */
+        /*$user = User::findFirstByEmail("lmedrano@multisistemas.com.sv");
+        
+        foreach ($user->companyUser as $userCom) {
+            $company = $userCom->company;
+        }
+
+        $companySys = CompanySystem::findFirstByCompanyId($company->getId());
+
+        $system = $companySys->system->shortname;
+
+        var_dump($system);
+
+        if ($this->session->has('manual')) {
+            $auth = $this->session->get('manual');
+            $user = User::findFirstById($auth->id);
+        } else if($this->session->has('opauth')) {
+            $auth = $this->session->get('opauth');
+            $user = User::findFirstByEmail($auth['auth']['raw']['email']);
+        }
+
+        $role = RoleUser::findFirstByUserId($user->getId());
+
+        if ($role == 1) {
+            foreach ($user->companyUser as $userCom) {
+                $company = $userCom->company;
+            }
+
+        }*/
     }
 }

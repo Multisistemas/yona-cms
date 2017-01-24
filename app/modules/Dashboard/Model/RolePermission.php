@@ -4,11 +4,11 @@ namespace Dashboard\Model;
 
 use Phalcon\Mvc\Model;
 
-class RoleUser extends Model {
+class RolePermission extends Model {
 
 	private $id;
 	private $role_id;
-	private $user_id;
+	private $permission_id;
 
 	private $created_at;
 	private $updated_at;
@@ -19,24 +19,23 @@ class RoleUser extends Model {
         $this->skipAttributes(array('id','created_at','updated_at','created_by','updated_by'));
 
         $this->belongsTo(
-        	"user_id",
-        	"User",
-        	"id"
-        );
-
-        $this->belongsTo(
         	"role_id",
         	"Role",
         	"id"
         );
 
+        $this->belongsTo(
+        	"permission_id",
+        	"Permission",
+        	"id"
+        );
     }
 
 	public function getId() { return $this->id; }
 	public function setRoleId($role_id) { $this->role_id = $role_id; }
 	public function getRoleId() { return $this->role_id; }
-	public function setUserId($user_id) { $this->user_id = $user_id; }
-	public function getUserId() { return $this->user_id; }
+	public function setPermissionId($permission_id) { $this->permission_id = $permission_id; }
+	public function getPermissionId() { return $this->permission_id; }
 
 	public function getCreatedAt() { return $this->created_at; }
     public function getUpdatedAt() { return $this->updated_at; }

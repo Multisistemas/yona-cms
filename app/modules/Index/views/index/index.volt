@@ -7,14 +7,22 @@
                     <img src="/static/images/mseilogo.png" alt="Multisistemas Logo">
                 </a>
             </div>
-
-            {% if session.has('opauth') or session.has('manual') %}
-                <div class="jumbotron">
-                    <h1>Bienvenido</h1>
-                    <h2>{{ auth.name }}</h2>
-                    <p>Comienza a utilizar tus sistemas</p>
-                    <a href="/dashboard/index/show"><button type="button" class="btn btn-success">Ver sistemas</button></a>
-                </div>
+            {% if session.has('opauth') %}
+                {% set opauth = session.get('opauth') %}
+                    <div class="jumbotron">
+                        <h1>Bienvenido</h1>
+                        <h2>{{ opauth['auth']['raw']['name'] }}</h2>
+                        <p>Comienza a utilizar tus sistemas</p>
+                        <a href="/dashboard/index/show"><button type="button" class="btn btn-success">Ver sistemas</button></a>
+                    </div>
+            {% elseif session.has('manual') %}
+                {% set manual = session.get('manual') %}
+                    <div class="jumbotron">
+                        <h1>Bienvenido</h1>
+                        <h2>{{ manual.name }}</h2>
+                        <p>Comienza a utilizar tus sistemas</p>
+                        <a href="/dashboard/index/show"><button type="button" class="btn btn-success">Ver sistemas</button></a>
+                    </div>
             {% else %}
             <div class="jumbotron">
                 <h1>Bienvenido a Multisistemas</h1>

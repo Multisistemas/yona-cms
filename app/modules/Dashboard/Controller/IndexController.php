@@ -9,52 +9,47 @@ use Phalcon\Mvc\View;
 use Dashboard\Model\CompanyUser;
 use Dashboard\Model\CompanySystem;
 use Dashboard\Model\System;
+use Dashboard\Model\User;
 
 
 class IndexController extends Controller
 {
 
     public function indexAction($system = null) {
-        if ($this->session->has('manual')) {
-        	$manual = $this->session->get('manual');
-        	$this->view->auth = $manual;
-        } else if ($this->session->has('opauth')) {
-        	$opauth = $this->session->get('opauth');
-        	$this->view->auth = $opauth;
-        } 
-
-        if ($system != null) {
-        	$systemUser = $system->getShortname();
-        	$this->view->system = $systemUser;
-        }
+        $this->view->system = $system;
     }
 
     public function loginAction() {
-        $loginform = new LoginForm();
-        $registerform = new RegisterForm();
 
-        $this->view->loginform = $loginform;
-        $this->view->registerform = $registerform;
-    }
+        if ($this->session->has('opauth') || $this->session->has('manual')) {
+            $this->redirect($this->url->get() . '/');
+        } else {
 
-    public function successAction() {
-        $auths = $this->session->get('opauth');
+            $loginform = new LoginForm();
+            $registerform = new RegisterForm();
 
-        $response = new Response;
-
-        $response->redirect("index/index")->auths = $auths;
-
+            $this->view->loginform = $loginform;
+            $this->view->registerform = $registerform;
+        }
     }
 
     public function showAction(){
-
-    	$user = $this->session->get('manual');
     	
-    	$companyUser = CompanyUser::findFirstByUserId($user->id);
+        if ($this->session->has('manual')) {
+            $auth = $this->session->get('manual');
+            $user = User::findFirstById($auth->id);
+        } else if($this->session->has('opauth')) {
+            $auth = $this->session->get('opauth');
+            $user = User::findFirstByEmail($auth['auth']['raw']['email']);
+        }
 
-    	$companySys = CompanySystem::findFirstByCompanyId($companyUser->getCompanyId());
-    	
-    	$system = System::findFirstById($companySys->getSystemId());
+    	foreach ($user->companyUser as $userCom) {
+            $company = $userCom->company;
+        }
+
+        $companySys = CompanySystem::findFirstByCompanyId($company->getId());
+
+        $system = $companySys->system->shortname;
 
     	$this->dispatcher->forward(
             [
