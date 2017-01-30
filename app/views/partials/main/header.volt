@@ -1,19 +1,56 @@
 <nav class="navbar navbar-default navbar-custom">
   <div class="container-fluid">
     <div class="navbar-header">
-      <a class="navbar-brand" href="/">Multisistemas</a>
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-multisis">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/"><img src="/static/images/logo.ico" alt="Multisistemas Logo" /><span class="inline">Multisistemas</span></a>
     </div>
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+    <div class="navbar-collapse collapse" id="navbar-multisis">
       <ul class="nav navbar-nav navbar-right">
+      {% set languages = helper.languages() %}
+      {% set en = '<img src="/static/images/flags/en.png">' %}
+      {% set es = '<img src="/static/images/flags/es.png">' %}
+
+
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+          Idioma
+          <span class="caret"></span>
+        </a>
+          <ul class="dropdown-menu">
+          {% if languages|length > 1 %}
+            {% for language in languages %}
+                <li>{{ helper.langSwitcher(language['iso'], language['name']) }}</li>
+            {% endfor %}
+          {% endif %}
+          </ul>
+      </li>
+   
       {% if session.has('manual') or session.has('opauth') %}
         {% if session.has('manual') %}
           {% set auth = session.get('manual') %}
-          <li><a class="dropdown-toggle profile-image"><img src="/static/images/user-default.png" class="img-circle special-img">{{ auth.name }}</a></li>
-          <li><a href="/dashboard/login/logout"><i class="fa fa-sign-out"></i> Cerrar sesión</a></li>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle profile-image" data-toggle="dropdown" role="button" aria-expanded="false">
+              <img src="/static/images/user-default.png" class="img-circle special-img">{{ auth.name }}<span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu" role="menu">
+              <li><a href="/dashboard/login/logout">Cerrar sesión</a></li>
+            </ul>
+          </li>
         {% elseif session.has('opauth') %}
           {% set opauth = session.get('opauth') %}
-          <li><a class="dropdown-toggle profile-image"><img src="{{ opauth['auth']['raw']['picture'] }}" class="img-circle special-img">{{ opauth['auth']['raw']['name'] }}</a></li>
-          <li><a href="/dashboard/login/logout"><i class="fa fa-sign-out"></i> Cerrar sesión</a></li>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle profile-image" data-toggle="dropdown" role="button" aria-expanded="false">
+              <img src="{{ opauth['auth']['raw']['picture'] }}" class="img-circle special-img">{{ opauth['auth']['raw']['name'] }}<span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu" role="menu">
+              <li><a href="/dashboard/login/logout">Cerrar sesión</a></li>
+            </ul>
+          </li>
         {% endif %}
       {% else %}
         <li class="active"><a href="/dashboard/index/login">Iniciar sesión / Registrarse</a></li>
@@ -23,20 +60,4 @@
   </div>
 </nav>
 
-{% set languages = helper.languages() %}
-{% if languages|length > 1 %}
-  <div class="container">
-    <div class="row">
-      <div class="col-md-12">
-        <div class="languages">
-        {% for language in languages %}
-            <div class="lang">
-                {{ helper.langSwitcher(language['iso'], language['name']) }}
-            </div>
-        {% endfor %}
-    </div>
-      </div>
-    </div>
-  </div>
-{% endif %}
 
