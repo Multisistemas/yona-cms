@@ -66,11 +66,6 @@ class Bootstrap
         // Events Manager, Dispatcher
         $this->initEventManager($di);
 
-        // Session
-        $session = new \Phalcon\Session\Adapter\Files();
-        $session->start();
-        $di->set('session', $session);
-
         // Request
         $request = new \Phalcon\Http\Request;
         $di->set('request', $request);

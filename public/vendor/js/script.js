@@ -29,3 +29,32 @@ function validatePass(){
     	msgPass.style.display = "none";
     }
 }
+
+function autocollapse() {
+  var navbar = $('.navbar-autocollapse');
+  navbar.removeClass('collapsed');
+  if(navbar.innerHeight() > 113)
+    navbar.addClass('collapsed');
+}
+
+function viewUsers() {
+    var user_div = $('#hidden-users-div');
+
+    if (user_div.css('display') == 'none') {
+        user_div.css('display', 'block');
+    } else if (user_div.css('display') == 'block') {
+        user_div.css('display', 'none');
+    }
+}
+
+function viewSystems() {
+    var system_div = $('#hidden-systems-div');
+
+    if (system_div.css('display') == 'none') {
+        system_div.css('display', 'block');
+    } else if (system_div.css('display') == 'block') {
+        system_div.css('display', 'none');
+    }
+}
+
+

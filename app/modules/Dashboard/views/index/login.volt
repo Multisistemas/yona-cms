@@ -8,14 +8,14 @@
                 <div class="panel-body" >
                     <form class="form-horizontal" method="post" action="{{ url.get() }}dashboard/login/loginManual">
                         <div class="form-group">
-                            <label for="email" class="col-sm-2 control-label">Correo:</label>
-                            <div class="col-sm-10">
+                            <label for="email" class="col-sm-3 control-label">Correo:</label>
+                            <div class="col-sm-9">
                                 {{ loginform.render('email') }}
                             </div>
                             </div>
                         <div class="form-group">
-                            <label for="password" class="col-sm-2 control-label">Contraseña:</label>
-                            <div class="col-sm-10">
+                            <label for="password" class="col-sm-3 control-label">Contraseña:</label>
+                            <div class="col-sm-9">
                                 {{ loginform.render('password') }}
                             </div>
                         </div>
@@ -37,7 +37,7 @@
             </div>
         </div>
         <div class="col-md-6">
-            <div class="center-text" id="question-div">
+            <div class="col-sm-12 center-text" id="question-div">
                 <p>¿Aún no posee una cuenta?</p>
                 <button class="btn btn-info" id="show-btn" onclick="showPanel();">Por favor, quiero una cuenta con Multisistemas</button>
             </div>
@@ -49,8 +49,8 @@
                 <div class="panel-body">
                     <form class="form-horizontal" method="post" onsubmit="showLoader();" id="rgform" action="{{ url.get() }}dashboard/register/sendMail">
                         <div class="form-group">
-                            <label for="rmail" class="col-sm-2 control-label">Correo:</label>
-                            <div class="col-sm-10">
+                            <label for="rmail" class="col-sm-3 control-label">Correo:</label>
+                            <div class="col-sm-9">
                                 {{ registerform.render('rmail') }}
                             </div>
                         </div>

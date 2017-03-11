@@ -427,10 +427,13 @@ class RegisterController extends Controller
               ->setFrom(array($parameters['username'] => 'Multisistemas Team'))
               ->setTo(array($saved_email))
               ->addPart('<h1>Mensaje enviado desde Multisistemas Dashboard</h1>
-                   <p>Email: '.$saved_email.'</p>
-                   <p>Mensaje: Haga click en el siguiente enlace para verificar su correo:</p>'.
+                   <p>Para: '.$saved_email.'</p>
+                   <p>Mensaje: Se le ha enviado una invitación para unirse a Multisistemas Dashboard</p>
+                   <p>Haga click en el siguiente enlace para registrarse con su equipo:</p>'.
                     '<p>http://'.$_SERVER['HTTP_HOST'].'/dashboard/register/validate/'.$token
-                    .'/'.$id.'</p>', 'text/html');
+                    .'/'.$id.'</p>'.
+                    '<br>'.
+                    '<p>Atentamente: <a href="http://www.multisistemas.com.sv">Multisistemas Team</a></p>', 'text/html');
         } else {
             $message = \Swift_Message::newInstance('Confirmación de cuenta')
               ->setFrom(array($parameters['username'] => 'Multisistemas Team'))
@@ -439,7 +442,9 @@ class RegisterController extends Controller
                    <p>Email: '.$saved_email.'</p>
                    <p>Mensaje: Haga click en el siguiente enlace para verificar su correo:</p>'.
                     '<p>http://'.$_SERVER['HTTP_HOST'].'/dashboard/register/validate/'.$token
-                    .'</p>', 'text/html');
+                    .'</p>'.
+                    '<br>'.
+                    '<p>Atentamente: <a href="http://www.multisistemas.com.sv">Multisistemas Team</a></p>', 'text/html');
         }
 
         try {
@@ -561,12 +566,33 @@ class RegisterController extends Controller
         
         //var_dump($this->session->get('opauth'));
 
-        /*$user = User::findFirstByEmail("lmedrano@multisistemas.com.sv");
+        $user = User::findFirstByEmail("lmedrano@multisistemas.com.sv");
         
-        foreach ($user->companyUser as $userCom) {
-            $company = $userCom->company;
+        /*foreach ($user->companyUser as $userCom) {
+            $companyId = $userCom->company->id;
         }
 
+        $usersCompany = CompanyUser::find(
+            [
+                "company_id" => $companyId,
+            ]
+        );
+
+        foreach ($usersCompany as $userC) {
+            $users[] = User::findFirstById($userC->getId());    
+        }
+
+        $users_total = array_shift($users);
+
+
+        if (!empty($users)) {
+            var_dump($users);
+        } else {
+            echo 'esta vacio';
+        }
+         
+
+        
         $companySys = CompanySystem::findFirstByCompanyId($company->getId());
 
         $system = $companySys->system->shortname;
@@ -589,5 +615,24 @@ class RegisterController extends Controller
             }
 
         }*/
+
+        foreach ($user->companyUser as $userCom) {
+            $companyId = $userCom->company->id;
+        }
+
+        $systems_company = CompanySystem::find(
+            [
+                "company_id" => $companyId,
+            ]
+        );
+
+        if (!empty($systems_company)) {
+
+            foreach ($systems_company as $sys) {
+                $date = date_create($sys->getCreatedAt());
+                var_dump(date_format($date, 'd/m/y'));
+            }
+
+        }
     }
 }
