@@ -26,6 +26,7 @@ class RestController extends \Application\Mvc\Controller
      */
     protected function render(\Api\Model\Payload $payload)
     {
+	    $this->view->disable();
         $format = $this->request->getQuery('format', null, 'json');
 
         switch ($format)
@@ -42,7 +43,7 @@ class RestController extends \Application\Mvc\Controller
                 break;
         }
 
-//        $this->response->setStatusCode(200, 'OK');
+        $this->response->setStatusCode(200, 'OK');
         $this->response->setContentType($contentType, $encoding);
         $this->response->setContent($content);
 
