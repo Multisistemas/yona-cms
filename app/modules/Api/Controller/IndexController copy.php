@@ -20,4 +20,16 @@ class IndexController extends \Api\Controller\RestController
 
         $this->render($payload);
     }
+    
+    /**
+     * API users page.
+     *
+     * @throws \Api\Exception\NotImplementedException
+     */
+    public function userAction()
+    {
+        $payload = new \Api\Model\Payload('Welcome to user api endpoint!');
+
+        $this->render($payload);
+    }
 }
