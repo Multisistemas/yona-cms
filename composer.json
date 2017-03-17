@@ -42,6 +42,7 @@
     "opauth/facebook": "*",
     "opauth/google": "*",
     "opauth/twitter": "*",
-    "swiftmailer/swiftmailer": "*"
+    "swiftmailer/swiftmailer": "*",
+    "league/oauth2-server": "~3.2"
   }
 }

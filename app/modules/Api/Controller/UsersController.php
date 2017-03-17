@@ -2,12 +2,14 @@
 
 namespace Api\Controller;
 
+use Dashboard\Model\User;
+
 /**
  * Class IndexController.
  *
  * @package Api\Controller
  */
-class UserController extends \Api\Controller\RestController
+class UsersController extends \Api\Controller\RestController
 {
     /**
      * API start page.
@@ -16,7 +18,9 @@ class UserController extends \Api\Controller\RestController
      */
     public function indexAction()
     {
-        $payload = new \Api\Model\Payload('Welcome to api user controller index action!');
+	    $users = User::find();
+	    
+        $payload = new \Api\Model\Payload($users);
 
         $this->render($payload);
     }

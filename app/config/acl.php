@@ -12,7 +12,7 @@ return [
         'sitemap/index'     => '*',
         'api/index'         => '*',
         'api/page'          => '*',
-        'api/user'          => '*',
+        'api/users'          => '*',
         'dashboard/index'        => '*',
         'dashboard/login'        => '*',
         'dashboard/register'     => '*',
