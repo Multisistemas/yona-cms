@@ -117,47 +117,30 @@ class IndexController extends Controller
         if ($this->session->has('manual')) {
             $auth = $this->session->get('manual');
             $user = User::findFirstById($auth->id);
-
-            foreach ($user->companyUser as $userCom) {
-            $company = $userCom->company;
-            }
-
-            $companySys = CompanySystem::findFirstByCompanyId($company->getId());
-
-            $system = $companySys->system->shortname;
-
-            $this->dispatcher->forward(
-                [
-                    "controller"    => "index",
-                    "action"        => "index",
-                    "params"        => [$system, $user],
-                ]
-            );
+            $this->checkSystems($user);
         } else if($this->session->has('opauth')) {
             $auth = $this->session->get('opauth');
             $user = User::findFirstByEmail($auth['auth']['raw']['email']);
-
-            foreach ($user->companyUser as $userCom) {
-            $company = $userCom->company;
-            }
-
-            $companySys = CompanySystem::findFirstByCompanyId($company->getId());
-
-            $system = $companySys->system->shortname;
-
-            $this->dispatcher->forward(
-                [
-                    "controller"    => "index",
-                    "action"        => "index",
-                    "params"        => [$system, $user],
-                ]
-            );
-            
+            $this->checkSystems($user); 
         } else {
             $this->indexAction();
         }
+    }
+    
+    private function checkSystems($user){
+        foreach ($user->companyUser as $userCom) {
+            $company = $userCom->company;
+            $companySys = CompanySystem::findFirstByCompanyId($company->getId());
+            $system = $companySys->system->shortname;
+		}
 
-    	
+        $this->dispatcher->forward(
+            [
+                "controller"    => "index",
+                "action"        => "index",
+                "params"        => [$system, $user],
+            ]
+        );
     }
 
 }
