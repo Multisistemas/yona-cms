@@ -18,14 +18,15 @@ class IndexController extends Controller
     public function indexAction($system = null, $user = null) {
         if ($system != null && $user != null) {
             $role = RoleUser::findFirstByUserId($user->getId());
-
-            $role = $role->getRoleId();
+            
+            $therole = $role->getRoleId();
+            
             $users = $this->searchForCompany($user);
             $systems = $this->searchForSystem($user);
 
-            if ($role->getRoleId() == 1){
+            if ($therole == 1){
                 $this->adminAction($system, $user, $role, $users, $systems);
-            } else if ($role->getRoleId() == 2) {
+            } else if ($therole == 2) {
                 $this->guestAction($system, $user, $role, $systems);
             }
         }
@@ -135,6 +136,7 @@ class IndexController extends Controller
             );
         } else if($this->session->has('opauth')) {
             $auth = $this->session->get('opauth');
+
             $user = User::findFirstByEmail($auth['auth']['raw']['email']);
 
             foreach ($user->companyUser as $userCom) {
