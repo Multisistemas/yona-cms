@@ -1,4 +1,7 @@
 .idea/
 app/config/environment/development.php
+node_modules/
+vendor/
+docker/
 composer.lock
 composer.phar

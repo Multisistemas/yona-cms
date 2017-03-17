@@ -29,6 +29,7 @@ class Bootstrap
         $loader = new \Phalcon\Loader();
         $loader->registerNamespaces($config->loader->namespaces->toArray());
         $loader->registerDirs([APPLICATION_PATH . "/plugins/"]);
+        $loader->registerFiles([APPLICATION_PATH . '/../vendor/autoload.php']);
         $loader->register();
 
         require_once APPLICATION_PATH . '/../vendor/autoload.php';
@@ -102,7 +103,8 @@ class Bootstrap
         $application->setDI($di);
 
         // Main dispatching process
-        $this->dispatch($di);
+        $response = $this->dispatch($di);
+        $response->send();
 
     }
 
@@ -322,16 +324,14 @@ class Bootstrap
                 $view->e = $e;
 
                 if ($e instanceof \Phalcon\Mvc\Dispatcher\Exception) {
-                    $response->setHeader(404, 'Not Found');
+                    $response->setStatusCode(404, 'Not Found');
                     $view->partial('error/error404');
                 } else {
-                    $response->setHeader(503, 'Service Unavailable');
+                    $response->setStatusCode(503, 'Service Unavailable');
                     $view->partial('error/error503');
                 }
-                $response->sendHeaders();
-                echo $response->getContent();
-                return;
 
+                return $response;
             }
         }
 
@@ -342,8 +342,6 @@ class Bootstrap
         );
 
         $view->finish();
-
-        $response = $di['response'];
 
         // AJAX
         $request = $di['request'];
@@ -370,9 +368,7 @@ class Bootstrap
             $response->setContent($view->getContent());
         }
 
-        $response->sendHeaders();
-
-        echo $response->getContent();
+        return $response;
     }
 
 }
