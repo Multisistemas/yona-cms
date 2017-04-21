@@ -42,6 +42,8 @@ footer {
 
 .jumbotron {
 	text-align: center;
+  background-color: rgba(3, 140, 76, 0.76);
+  color: #ffffff;
 }
 
 .navbar-custom {

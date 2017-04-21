@@ -114,19 +114,27 @@ class IndexController extends Controller
     }
 
     public function showAction(){
-    	
         if ($this->session->has('manual')) {
             $auth = $this->session->get('manual');
+            var_dump($auth);
+
             $user = User::findFirstById($auth->id);
 
+            var_dump($user);
+
             foreach ($user->companyUser as $userCom) {
-            $company = $userCom->company;
+                $company = $userCom->company;
             }
 
             $companySys = CompanySystem::findFirstByCompanyId($company->getId());
 
+            var_dump($companySys);
+
             $system = $companySys->system->shortname;
 
+            var_dump($system);
+
+            exit;
             $this->dispatcher->forward(
                 [
                     "controller"    => "index",

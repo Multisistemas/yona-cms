@@ -28,7 +28,7 @@
                     <hr>
                     <br>
                     <form method="get" action="{{ url.get() }}dashboard/login/loginOpauth/google">
-                        <button type="submit" class="btn btn-success">
+                        <button type="submit" class="btn btn-lg btn-danger">
                            <i class="fa fa-google" aria-hidden="true"></i>
                             Ingresar con Google
                         </button>
