@@ -1,3 +1,4 @@
+.DS_Store
 .idea/
 app/config/environment/development.php
 node_modules/
