@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'YonaCms Admin Panel' => 'Panel administrativo YonaCms',
+    'Multisistemas CMS Admin Panel' => 'Panel administrativo Multisistemas CMS',
     'List of Languages' => 'Lista de idiomas',
     'Title' => 'Título',
     'Slug' => 'Slug',

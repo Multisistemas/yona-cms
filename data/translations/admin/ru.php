@@ -5,7 +5,7 @@
  */
 
 return array(
-    'YonaCms Admin Panel' => 'Административная панель YonaCms',
+    'Multisistemas CMS Admin Panel' => 'Административная панель Multisistemas CMS',
     'Warning. Found admin user with name yona' => 'Найден административный пользователь <b>yona</b>, для повышения безопасности рекомендуется удалить этого пользователя и создать новую персональную учетную запись',
     'List of Languages' => 'Список языков',
     'Title' => 'Название',
