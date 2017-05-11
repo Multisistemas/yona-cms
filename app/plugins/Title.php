@@ -4,7 +4,7 @@
      * @author Oleksandr Torosh <web@wezoom.net>
      */
 
-namespace YonaCMS\Plugin;
+namespace MultiCMS\Plugin;
 
 use \Phalcon\Mvc\User\Plugin;
 

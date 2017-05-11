@@ -1,6 +1,6 @@
 <?php
 
-namespace YonaCMS;
+namespace MultiCMS;
 use Application\Cache\Manager as CacheManager;
 use Phalcon\Session\Adapter\Files as SessionAdapter;
 
@@ -168,16 +168,16 @@ class Bootstrap
         $dispatcher = new \Phalcon\Mvc\Dispatcher();
 
         $eventsManager->attach("dispatch:beforeDispatchLoop", function ($event, $dispatcher) use ($di) {
-            new \YonaCMS\Plugin\CheckPoint($di->get('request'));
-            new \YonaCMS\Plugin\Localization($dispatcher);
-            new \YonaCMS\Plugin\AdminLocalization($di->get('config'));
-            new \YonaCMS\Plugin\Acl($di->get('acl'), $dispatcher, $di->get('view'));
-            new \YonaCMS\Plugin\MobileDetect($di->get('session'), $di->get('view'), $di->get('request'));
+            new \MultiCMS\Plugin\CheckPoint($di->get('request'));
+            new \MultiCMS\Plugin\Localization($dispatcher);
+            new \MultiCMS\Plugin\AdminLocalization($di->get('config'));
+            new \MultiCMS\Plugin\Acl($di->get('acl'), $dispatcher, $di->get('view'));
+            new \MultiCMS\Plugin\MobileDetect($di->get('session'), $di->get('view'), $di->get('request'));
         });
 
         $eventsManager->attach("dispatch:afterDispatchLoop", function ($event, $dispatcher) use ($di) {
             new \Seo\Plugin\SeoManager($dispatcher, $di->get('request'), $di->get('router'), $di->get('view'));
-            new \YonaCMS\Plugin\Title($di);
+            new \MultiCMS\Plugin\Title($di);
         });
 
         // Profiler

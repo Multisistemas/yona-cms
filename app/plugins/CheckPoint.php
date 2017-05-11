@@ -6,7 +6,7 @@
  * Костыль для переадресаций index.php, index.html на соотв. роуты, пример: '/index.php/news' -> '/news'
  * Данное решение было сделано для облегчения настройки веб-сервера и выполнения SEO-требований
  */
-namespace YonaCMS\Plugin;
+namespace MultiCMS\Plugin;
 
 use Phalcon\Http\Request;
 

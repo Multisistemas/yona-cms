@@ -6,7 +6,7 @@
  * @author Aleksandr Torosh <webtorua@gmail.com>
  */
 
-namespace YonaCMS\Plugin;
+namespace MultiCMS\Plugin;
 
 use Phalcon\Mvc\User\Plugin;
 

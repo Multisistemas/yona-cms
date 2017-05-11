@@ -16,7 +16,7 @@ class Config
         $config_default = [
             'loader'    => [
                 'namespaces' => [
-                    'YonaCMS\Plugin' => APPLICATION_PATH . '/plugins/',
+                    'MultiCMS\Plugin' => APPLICATION_PATH . '/plugins/',
                     'Application'    => APPLICATION_PATH . '/modules/Application',
                     'Cms'            => APPLICATION_PATH . '/modules/Cms',
                 ],

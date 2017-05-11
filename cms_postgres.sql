@@ -916,12 +916,12 @@ COPY page_translate (id, foreign_id, lang, key, value) FROM stdin;
 12	2	ru	meta_title	* TRIAL 
 13	2	ru	meta_description	
 14	2	ru	meta_keywords	
-15	2	ru	text	<h2>Контакты</h2>\r\n<p><a href="http://yonacms.com">http://yonacms.com</a></p>
+15	2	ru	text	<h2>Контакты</h2>\r\n<p><a href="http://multisistemas.com.sv">http://multisistemas.com.sv</a></p>
 16	2	en	title	Contacts
 17	2	en	meta_title	Contacts
 18	2	en	meta_description	
 19	2	en	meta_keywords	
-20	2	en	text	<h1>Contacts</h1>\r\n<p><a href="http://yonacms.com">http://yonacms.com</a></p>
+20	2	en	text	<h1>Contacts</h1>\r\n<p><a href="http://multisistemas.com.sv">http://multisistemas.com.sv</a></p>
 21	1	uk	title	Головна
 22	1	uk	meta_title	Головна
 23	1	uk	meta_description	meta-description головної сторінки
@@ -931,7 +931,7 @@ COPY page_translate (id, foreign_id, lang, key, value) FROM stdin;
 27	2	uk	meta_title	Контакти
 28	2	uk	meta_description	
 29	2	uk	meta_keywords	
-30	2	uk	text	<h1>Контакти</h1>\r\n<p><a href="http://yonacms.com">http://yonacms.com</a></p>
+30	2	uk	text	<h1>Контакти</h1>\r\n<p><a href="http://multisistemas.com.sv">http://multisistemas.com.sv</a></p>
 \.
 
 
@@ -1039,17 +1039,17 @@ COPY publication_translate (id, foreign_id, lang, key, value) FROM stdin;
 62	5	en	meta_title	New widgets system
 63	5	en	meta_description	
 64	5	en	meta_keywords	
-65	5	en	text	<p>Here is the new features of YonaCMS - "System of modular widgets".</p>\r\n<p>Now, in any of your modules, you can create dynamic widgets with their business logic and templates. Forget about dozens of separate helper and the need to do the same routine operations! Also, this scheme will maintain cleanliness and order in the code for your project.</p>\r\n<p>Call each widget can be produced directly from the template Volt with the transfer set of parameters. Each widget is automatically cached and does not lead to additional load on the database. Caching can be disabled in the administrative panel, see Admin -&gt; Settings, option "Widgets caching". Automatic regeneration of the cache is carried out after 60 seconds.</p>\r\n<p>As an example of such a call is made to the widget template's main page /app/modules/Index/views/index.volt</p>\r\n<pre>{{Helper.widget ('Publication'). LastNews ()}}</pre>\r\n<p><br />Files widget:<br />/app/modules/Publication/Widget/PublicationWidget.php - inherits \\ Application \\ Widget \\ AbstractWidget<br />/app/modules/Publication/views/widget/last-news.volt - template output</p>\r\n<p>The main class of the widget - \\ Application \\ Widget \\ Proxy<br />It is possible to set the default value for time caching.</p>\r\n<p>This system will be very useful for developers who have a lot of individual information units, as well as those who want to keep your code clean and easy tool to use.</p>
+65	5	en	text	<p>Here is the new features of Multisistemas CMS - "System of modular widgets".</p>\r\n<p>Now, in any of your modules, you can create dynamic widgets with their business logic and templates. Forget about dozens of separate helper and the need to do the same routine operations! Also, this scheme will maintain cleanliness and order in the code for your project.</p>\r\n<p>Call each widget can be produced directly from the template Volt with the transfer set of parameters. Each widget is automatically cached and does not lead to additional load on the database. Caching can be disabled in the administrative panel, see Admin -&gt; Settings, option "Widgets caching". Automatic regeneration of the cache is carried out after 60 seconds.</p>\r\n<p>As an example of such a call is made to the widget template's main page /app/modules/Index/views/index.volt</p>\r\n<pre>{{Helper.widget ('Publication'). LastNews ()}}</pre>\r\n<p><br />Files widget:<br />/app/modules/Publication/Widget/PublicationWidget.php - inherits \\ Application \\ Widget \\ AbstractWidget<br />/app/modules/Publication/views/widget/last-news.volt - template output</p>\r\n<p>The main class of the widget - \\ Application \\ Widget \\ Proxy<br />It is possible to set the default value for time caching.</p>\r\n<p>This system will be very useful for developers who have a lot of individual information units, as well as those who want to keep your code clean and easy tool to use.</p>
 66	5	ru	title	* TRIAL * TRIAL * TRIAL * TRIAL 
 67	5	ru	meta_title	* TRIAL * TRIAL * TRIA
 68	5	ru	meta_description	
 69	5	ru	meta_keywords	
-70	5	ru	text	<p>Представляем вам новый функционал от YonaCMS - "Систему модульных виджетов".</p>\r\n<p>Теперь в любом из ваших модулей вы можете создать динамические виджеты со своей бизнес-логикой и шаблонами. Забудьте о десятках отдельных хелперов и необходимости делать одни и те же рутинные операции! Также эта схема позволит поддерживать чистоту и порядок в коде вашего проекта.</p>\r\n<p>Вызов каждого виджета может быть произведен непосредственно с шаблона Volt с передачей набора параметров. Каждый виджет автоматически кешируется и не влечет дополнительной нагрузки на базу данных. Кеширование можно отключить в административной панели в разделе Admin -&gt; Settings, опция "Widgets caching". Автоматическая перегенерация кеша осуществляется через 60 секунд.</p>\r\n<p>В качестве примера сделан вызов такого виджета в шаблоне главной страницы /app/modules/Index/views/index.volt</p>\r\n<pre>{{ helper.widget('Publication').lastNews() }}</pre>\r\n<p><br />Файлы виджета:<br />/app/modules/Publication/Widget/PublicationWidget.php - наследует класс \\Application\\Widget\\AbstractWidget<br />/app/modules/Publication/views/widget/last-news.volt - шаблон вывода</p>\r\n<p>Основной класс системы виджетов - \\Application\\Widget\\Proxy<br />В нем можно установить дефолтное значение времени кеширования.</p>\r\n<p>Данная система будет очень полезна для разработчиков, которые имеют много отдельных информационных блоков, а также тем, кто хочет поддерживать свой код в чистоте и пользоваться удобным инструментом.</p>
+70	5	ru	text	<p>Представляем вам новый функционал от Multisistemas CMS - "Систему модульных виджетов".</p>\r\n<p>Теперь в любом из ваших модулей вы можете создать динамические виджеты со своей бизнес-логикой и шаблонами. Забудьте о десятках отдельных хелперов и необходимости делать одни и те же рутинные операции! Также эта схема позволит поддерживать чистоту и порядок в коде вашего проекта.</p>\r\n<p>Вызов каждого виджета может быть произведен непосредственно с шаблона Volt с передачей набора параметров. Каждый виджет автоматически кешируется и не влечет дополнительной нагрузки на базу данных. Кеширование можно отключить в административной панели в разделе Admin -&gt; Settings, опция "Widgets caching". Автоматическая перегенерация кеша осуществляется через 60 секунд.</p>\r\n<p>В качестве примера сделан вызов такого виджета в шаблоне главной страницы /app/modules/Index/views/index.volt</p>\r\n<pre>{{ helper.widget('Publication').lastNews() }}</pre>\r\n<p><br />Файлы виджета:<br />/app/modules/Publication/Widget/PublicationWidget.php - наследует класс \\Application\\Widget\\AbstractWidget<br />/app/modules/Publication/views/widget/last-news.volt - шаблон вывода</p>\r\n<p>Основной класс системы виджетов - \\Application\\Widget\\Proxy<br />В нем можно установить дефолтное значение времени кеширования.</p>\r\n<p>Данная система будет очень полезна для разработчиков, которые имеют много отдельных информационных блоков, а также тем, кто хочет поддерживать свой код в чистоте и пользоваться удобным инструментом.</p>
 71	5	uk	title	Нова система модульних віджетів
 72	5	uk	meta_title	Нова система віджетів
 73	5	uk	meta_description	
 74	5	uk	meta_keywords	
-75	5	uk	text	<p>Представляємо вам новий функціонал від YonaCMS - "Систему модульних віджетів".</p>\r\n<p>Тепер в будь-якому з ваших модулів ви можете створити динамічні віджети з власною&nbsp;бізнес-логікою і шаблонами. Забудьте про десятки окремих хелперів та необхідності робити одні і ті ж самі рутинні операції! Також ця схема дозволить підтримувати чистоту і порядок у коді вашого проекту.</p>\r\n<p>Виклик кожного віджета може бути проведений безпосередньо з шаблону Volt з передачею набору параметрів. Кожен віджет автоматично кешуєтся і не тягне додаткового навантаження на базу даних. Кешування можна відключити в адміністративній панелі в розділі Admin -&gt; Settings, опція "Widgets caching". Автоматична перегенерація кеша здійснюється через 60 секунд.</p>\r\n<p>Як приклад зроблений виклик такого віджета в шаблоні головної сторінки /app/modules/Index/views/index.volt</p>\r\n<pre>{{Helper.widget ('Publication'). LastNews ()}}</pre>\r\n<p><br />Файли віджету:<br />/app/modules/Publication/Widget/PublicationWidget.php - успадковує клас \\ Application \\ Widget \\ AbstractWidget<br />/app/modules/Publication/views/widget/last-news.volt - шаблон виводу</p>\r\n<p>Основний клас системи віджетів - \\ Application \\ Widget \\ Proxy<br />У ньому можна встановити дефолтне значення часу кешування.</p>\r\n<p>Дана система буде дуже корисною для розробників, які мають багато окремих інформаційних блоків, а також тим, хто хоче підтримувати свій код в чистоті і користуватися зручним інструментом.</p>
+75	5	uk	text	<p>Представляємо вам новий функціонал від Multisistemas CMS - "Систему модульних віджетів".</p>\r\n<p>Тепер в будь-якому з ваших модулів ви можете створити динамічні віджети з власною&nbsp;бізнес-логікою і шаблонами. Забудьте про десятки окремих хелперів та необхідності робити одні і ті ж самі рутинні операції! Також ця схема дозволить підтримувати чистоту і порядок у коді вашого проекту.</p>\r\n<p>Виклик кожного віджета може бути проведений безпосередньо з шаблону Volt з передачею набору параметрів. Кожен віджет автоматично кешуєтся і не тягне додаткового навантаження на базу даних. Кешування можна відключити в адміністративній панелі в розділі Admin -&gt; Settings, опція "Widgets caching". Автоматична перегенерація кеша здійснюється через 60 секунд.</p>\r\n<p>Як приклад зроблений виклик такого віджета в шаблоні головної сторінки /app/modules/Index/views/index.volt</p>\r\n<pre>{{Helper.widget ('Publication'). LastNews ()}}</pre>\r\n<p><br />Файли віджету:<br />/app/modules/Publication/Widget/PublicationWidget.php - успадковує клас \\ Application \\ Widget \\ AbstractWidget<br />/app/modules/Publication/views/widget/last-news.volt - шаблон виводу</p>\r\n<p>Основний клас системи віджетів - \\ Application \\ Widget \\ Proxy<br />У ньому можна встановити дефолтне значення часу кешування.</p>\r\n<p>Дана система буде дуже корисною для розробників, які мають багато окремих інформаційних блоків, а також тим, хто хоче підтримувати свій код в чистоті і користуватися зручним інструментом.</p>
 \.
 
 
@@ -1189,7 +1189,7 @@ COPY translate (id, lang, phrase, translation) FROM stdin;
 27	en	Articles	* TRIAL 
 28	en	Contacts	Contacts
 29	en	Admin	Admin
-30	en	YonaCms Admin Panel	* TRIAL * TRIAL * T
+30	en	Multisistemas CMS Admin Panel	* TRIAL * TRIAL * T
 31	en	Back к перечню публикаций	Back to publications list
 32	en	Страница №	Page num.
 33	ru	Home	Главная
@@ -1197,7 +1197,7 @@ COPY translate (id, lang, phrase, translation) FROM stdin;
 35	ru	Articles	Статьи
 36	ru	* TRIAL 	Контакты
 37	ru	Admin	Админка
-38	ru	YonaCms Admin Panel	* TRIAL * TRIAL * TRIAL * TRIAL
+38	ru	Multisistemas CMS Admin Panel	* TRIAL * TRIAL * TRIAL * TRIAL
 39	ru	Back к перечню публикаций	* TRIAL * TRIAL * TRIAL * 
 40	ru	Страница №	Страница №
 41	uk	Home	Головна
@@ -1205,7 +1205,7 @@ COPY translate (id, lang, phrase, translation) FROM stdin;
 43	uk	Articles	Статті
 44	uk	Contacts	Контакти
 45	uk	Admin	Адмінка
-46	uk	* TRIAL * TRIAL * T	Адміністративна панель YonaCms
+46	uk	* TRIAL * TRIAL * T	Адміністративна панель Multisistemas CMS
 47	uk	Back к перечню публикаций	Назад до переліку публікацій
 48	uk	Страница №	Сторінка №
 49	en	Полная версия	Full version

@@ -5,7 +5,7 @@
  * @author Oleksandr Torosh <web@wezoom.net>
  */
 
-namespace YonaCMS\Plugin;
+namespace MultiCMS\Plugin;
 
 class MobileDetect
 {
