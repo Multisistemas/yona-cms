@@ -27,7 +27,7 @@ class TranslateController extends Controller
             $post = $this->request->getPost();
             if (!empty($post)) {
                 foreach ($post as $key => $value) {
-                    $key = str_replace('_', ' ', $key); // При отправке формы POST-запросом, все пробелы заменяются на "_". Меняем обратно.
+                    $key = str_replace('_', ' ', $key); // When you submit a form with a POST request, all spaces are replaced with "_". We change back.
                     $phrase = $model->findByPhraseAndLang($key);
                     if ($phrase) {
                         $phrase->setTranslation($value);

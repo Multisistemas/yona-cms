@@ -7,7 +7,7 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="/"><img src="/static/images/logo.ico" alt="Multisistemas Logo" /><span class="inline">Multisistemas</span></a>
+      <a class="navbar-brand" href="/"><img src="/static/images/logo.ico" alt="Logo" /><span class="inline">Multisistemas</span></a>
     </div>
     <div class="navbar-collapse collapse" id="navbar-multisis">
       <ul class="nav navbar-nav navbar-right">

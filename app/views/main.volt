@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-    <title>Multisistemas Dashboard</title>
+    <title>Multi CMS</title>
 
     {{ helper.meta().get('description') }}
     {{ helper.meta().get('keywords') }}

@@ -57,7 +57,7 @@ class IndexController extends Controller
 
         $this->helper->title()->append($typeModel->getHeadTitle());
         if ($page > 1) {
-            $this->helper->title()->append($this->helper->translate('Страница №') . ' ' . $page);
+            $this->helper->title()->append($this->helper->translate('Page') . ' ' . $page);
         }
         $this->view->title  = $typeModel->getTitle();
         $this->view->format = $typeModel->getFormat();

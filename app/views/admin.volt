@@ -14,6 +14,15 @@
     <link href="{{ url.path() }}vendor/bootstrap/jasny-bootstrap/css/jasny-bootstrap.min.css" rel="stylesheet"
           type="text/css">
 
+	{{ assets.outputJs('modules-admin-js') }}
+    <script src="{{ url.path() }}vendor/js/jquery-1.11.0.min.js"></script>
+    <script src="{{ url.path() }}vendor/semantic-2.1/semantic.min.js"></script>
+    <script src="{{ url.path() }}vendor/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="{{ url.path() }}vendor/bootstrap/jasny-bootstrap/js/jasny-bootstrap.min.js"></script>
+    <script src="{{ url.path() }}vendor/js/jquery.address.js"></script>
+    <script src="{{ url.path() }}vendor/noty/packaged/jquery.noty.packaged.min.js"></script>
+    <script src="{{ url.path() }}static/js/admin.js"></script>
+
     <!--less-->
     {{ assets.outputLess('modules-admin-less') }}
 
@@ -53,18 +62,9 @@
         {{ content() }}
 
         <hr>
-        <a href="http://yonacms.com" class="works-on" target="_blank">Works on Yona CMS</a>
+        <a href="http://multisistemas.com.sv" class="works-on" target="_blank">Powered by Multisistemas</a>
 
     </div>
-
-{{ assets.outputJs('modules-admin-js') }}
-    <script src="{{ url.path() }}vendor/js/jquery-1.11.0.min.js"></script>
-    <script src="{{ url.path() }}vendor/semantic-2.1/semantic.min.js"></script>
-    <script src="{{ url.path() }}vendor/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="{{ url.path() }}vendor/bootstrap/jasny-bootstrap/js/jasny-bootstrap.min.js"></script>
-    <script src="{{ url.path() }}vendor/js/jquery.address.js"></script>
-    <script src="{{ url.path() }}vendor/noty/packaged/jquery.noty.packaged.min.js"></script>
-    <script src="{{ url.path() }}static/js/admin.js"></script>
 
 </body>
 </html>

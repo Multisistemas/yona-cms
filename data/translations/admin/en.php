@@ -3,6 +3,7 @@
 return [
     'YonaCms Admin Panel' => 'Administrative panel YonaCms',
     'List of Languages' => 'List of Languages',
+    'Full version' => 'Full version',
     'Title' => 'Title',
     'Slug' => 'Slug',
     'Text' => 'Text',

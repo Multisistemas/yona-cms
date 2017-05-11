@@ -18,6 +18,6 @@
         <a href="{{ link }}" class="title">{{ item.title }}</a>
         <section class="announce">{{ helper.announce(item.text, 300) }}</section>
 
-        <a href="{{ link }}" class="details">{{ helper.translate('Подробнее') }} &rarr;</a>
+        <a href="{{ link }}" class="details">{{ helper.translate('Read more') }} &rarr;</a>
     </div>
 </div>
