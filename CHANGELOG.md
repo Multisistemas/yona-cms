@@ -34,7 +34,7 @@
 
 ## v0.3.1
 
-- Minimized index.php code; Created **YonaCms\Plugin\CheckPoint** plugin for detecting index.php, index.html in Request URI;
+- Minimized index.php code; Created **MultiCMS\Plugin\CheckPoint** plugin for detecting index.php, index.html in Request URI;
 
 - Removed PUBLIC_PATH constant;
 
@@ -70,7 +70,7 @@
 
 ## v0.2  
 
-- You don't need create virtual host for starting using YonaCms anymore. Applied simple localhost dynamic configuration as **http://localhost/yona-cms/web/**;
+- You don't need create virtual host for starting using MultiCMS anymore. Applied simple localhost dynamic configuration as **http://localhost/multi-cms/web/**;
 
 - Added 'base_path' variable in configuration;
 
@@ -290,7 +290,7 @@
 
 - Fixed path to elfinder module FileManager;
 
-- Added check for the administrative user 'yona', a warning message about the need to remove it;
+- Added check for the administrative user 'admin', a warning message about the need to remove it;
 
 - Added a constant ROOT = $ _SERVER ['DOCUMENT_ROOT'];
 
