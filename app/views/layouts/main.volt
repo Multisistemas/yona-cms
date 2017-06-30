@@ -1,3 +1,4 @@
+{{ partial('main/nav') }}
 <header>
     {{ partial('main/header') }}
 </header>
@@ -15,9 +16,9 @@
 
     </div>
 </div>
-<footer class="footer">
+<!--footer class="footer"-->
     {{ partial('main/footer') }}
-</footer>
+<!--/footer-->
 
 <!--{% if registry.cms['PROFILER'] %}
     {{ helper.dbProfiler() }}

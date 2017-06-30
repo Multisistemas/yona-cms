@@ -33,7 +33,7 @@ class Bootstrap
         $loader->register();
 
         require_once APPLICATION_PATH . '/../vendor/autoload.php';
-    
+
         // Database
         $db = new \Phalcon\Db\Adapter\Pdo\Mysql([
             "host"     => $config->database->host,

@@ -29,7 +29,7 @@
     <script src="{{ url.path() }}vendor/js/less-1.7.3.min.js" type="text/javascript"></script>
     <!--/less-->
 
-    
+
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>

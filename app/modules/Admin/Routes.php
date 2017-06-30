@@ -13,7 +13,7 @@ class Routes
 
     public function init($router)
     {
-        $router->add('/admin', array(
+        $router->add('/admin/', array(
             'module'     => 'admin',
             'controller' => 'index',
             'action'     => 'index',
